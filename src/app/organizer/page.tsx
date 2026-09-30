@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 import { Appointment, User } from '@/types';
 
-export default function OrganizerPage() {
+function OrganizerContent() {
   const searchParams = useSearchParams();
   const providerIdParam = searchParams.get('providerId');
   const providerNameParam = searchParams.get('providerName');
@@ -786,5 +786,13 @@ export default function OrganizerPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function OrganizerPage() {
+  return (
+    <React.Suspense fallback={<div className="max-w-6xl mx-auto p-12 text-center text-xs text-slate-500">Loading visit organizer...</div>}>
+      <OrganizerContent />
+    </React.Suspense>
   );
 }
