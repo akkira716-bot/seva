@@ -12,7 +12,7 @@
 
 ## 🏛 Architecture Blueprint & Development Stages
 
-The platform is designed in four distinct modular stages as outlined in [BLUEPRINT.md](./BLUEPRINT.md):
+The platform is designed and implemented across four distinct modular stages as outlined in [BLUEPRINT.md](./BLUEPRINT.md):
 
 ```
        ┌─────────────────────────────────────────────────────────────┐
@@ -39,19 +39,19 @@ The platform is designed in four distinct modular stages as outlined in [BLUEPRI
 - **Emergency Red Flag Matrix**: Triage guidance with 24/7 hotline links (911, 988, 1-833-9-HELP4MOMS) accessible without an account.
 - **WHO Privacy Benchmark**: Zero tracking and no sign-up required for public health browsing.
 
-### 2. Stage 2: Personal Organizer & Accounts (In Progress)
+### 2. Stage 2: Personal Organizer & Accounts (Completed & Pushed)
 - User accounts with language & notification preferences.
 - Saved visits and appointments with linked care providers.
 - "Questions to Ask" visit checklist pre-populated by pregnancy trimester and pediatric age.
 - Right to be Forgotten: One-click complete account deletion and JSON data export.
 
-### 3. Stage 3: Optional Tracking (Care Logs)
+### 3. Stage 3: Optional Tracking (Care Logs) (Completed & Pushed)
 - Baby feeding (breast/bottle/solids), sleep duration, and diaper logs.
 - Visual daily summaries and activity timelines.
 - Strict data isolation: care logs segregated from public search indexes.
 - Configurable data retention policies and single-click history purge.
 
-### 4. Stage 4: Admin & Clinical Review Portal + Clinic Integrations
+### 4. Stage 4: Admin & Clinical Review Portal + Clinic Integrations (Completed & Pushed)
 - Role-Based Access Control (Admin, Clinical Reviewer, Content Editor).
 - Editorial workflow: Draft ➔ Clinical Review ➔ Editorial Review ➔ Publish ➔ Retire.
 - Provider credential verification and directory management.
@@ -66,7 +66,7 @@ The platform is designed in four distinct modular stages as outlined in [BLUEPRI
 - Node.js 18+ (tested on Node v24)
 - npm or pnpm
 
-### Installation
+### Installation & Run
 ```bash
 # Clone the repository
 git clone https://github.com/akkira716-bot/seva.git
@@ -75,7 +75,13 @@ cd seva
 # Install dependencies
 npm install
 
-# Run the development server
+# Build production bundle
+npm run build
+
+# Start production server
+npm start
+
+# Or run the development server
 npm run dev
 ```
 
