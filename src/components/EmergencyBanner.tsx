@@ -2,10 +2,12 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { AlertTriangle, Phone, X, ShieldAlert } from 'lucide-react';
+import { Phone, X, ShieldAlert } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function EmergencyBanner() {
   const [dismissed, setDismissed] = useState(false);
+  const { t } = useLanguage();
 
   if (dismissed) return null;
 
@@ -21,10 +23,10 @@ export default function EmergencyBanner() {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-300"></span>
           </span>
           <span className="flex items-center gap-1.5 font-bold tracking-wide uppercase text-rose-200">
-            <ShieldAlert className="w-4 h-4 text-rose-300 inline" /> Urgent Help:
+            <ShieldAlert className="w-4 h-4 text-rose-300 inline" /> {t('banner_urgent_title')}
           </span>
           <span className="text-rose-100">
-            Experiencing severe headache, vision changes, heavy bleeding, or infant fever &gt;100.4°F?
+            {t('banner_urgent_text')}
           </span>
         </div>
         
@@ -33,18 +35,18 @@ export default function EmergencyBanner() {
             href="/urgent-help"
             className="underline underline-offset-2 hover:text-white font-semibold text-rose-100 focus:outline-none focus:ring-1 focus:ring-rose-300 rounded"
           >
-            View Red Flag Matrix
+            {t('banner_view_matrix')}
           </Link>
           <a
             href="tel:18339435746"
             className="inline-flex items-center gap-1 bg-rose-800 hover:bg-rose-700 text-white px-2.5 py-1 rounded text-xs transition"
           >
             <Phone className="w-3 h-3" />
-            <span className="hidden sm:inline">24/7 Hotline:</span> 1-833-9-HELP4MOMS
+            <span className="hidden sm:inline">{t('banner_hotline_label')}</span> 1-833-9-HELP4MOMS
           </a>
           <button
             onClick={() => setDismissed(true)}
-            aria-label="Dismiss urgent warning alert"
+            aria-label={t('banner_dismiss')}
             className="text-rose-300 hover:text-white p-0.5 rounded"
           >
             <X className="w-4 h-4" />

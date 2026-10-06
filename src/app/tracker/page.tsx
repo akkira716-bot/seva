@@ -1,25 +1,21 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { 
   Activity, 
   Moon, 
   Baby, 
-  Coffee, 
   Pill, 
   Trash2, 
   ShieldCheck, 
   Clock, 
-  PlusCircle, 
-  CheckCircle2, 
-  AlertCircle,
-  Lock,
-  ChevronDown
+  Lock
 } from 'lucide-react';
 import { CareLogEntry, CareLogType } from '@/types';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function TrackerPage() {
+  const { t } = useLanguage();
   const [logs, setLogs] = useState<CareLogEntry[]>([]);
   const [summary, setSummary] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -153,20 +149,20 @@ export default function TrackerPage() {
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-800 text-xs font-semibold">
             <Activity className="w-3.5 h-3.5" />
-            <span>Optional Health Tracking (Stage 3)</span>
+            <span>{t('tracker_tag')}</span>
           </div>
           <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
-            Baby Care Tracker & Vitality Logs
+            {t('tracker_title')}
           </h1>
           <p className="text-sm text-slate-600 mt-0.5">
-            Log feedings, sleep duration, and diaper changes to observe daily rhythms and share insights with your pediatrician.
+            {t('tracker_desc')}
           </p>
         </div>
 
         {/* Strict isolation badge */}
         <div className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-900 text-slate-200 text-xs shadow-sm">
           <Lock className="w-4 h-4 text-teal-400" />
-          <span>Care logs are isolated &amp; not indexed</span>
+          <span>{t('tracker_isolated_badge')}</span>
         </div>
       </div>
 
@@ -184,9 +180,9 @@ export default function TrackerPage() {
               <Baby className="w-6 h-6" />
             </div>
             <div>
-              <span className="text-xs text-slate-500 font-medium">Today&apos;s Feedings</span>
+              <span className="text-xs text-slate-500 font-medium">{t('tracker_today_feeds')}</span>
               <div className="text-2xl font-black text-slate-900">{summary.todayFeedCount} feeds</div>
-              <span className="text-[10px] text-slate-400">Target: 8–12 feeds / 24h</span>
+              <span className="text-[10px] text-slate-400">{t('tracker_target_feeds')}</span>
             </div>
           </div>
 
@@ -195,7 +191,7 @@ export default function TrackerPage() {
               <Moon className="w-6 h-6" />
             </div>
             <div>
-              <span className="text-xs text-slate-500 font-medium">Total Sleep Today</span>
+              <span className="text-xs text-slate-500 font-medium">{t('tracker_today_sleep')}</span>
               <div className="text-2xl font-black text-slate-900">
                 {Math.floor(summary.todaySleepMinutes / 60)}h {summary.todaySleepMinutes % 60}m
               </div>
@@ -208,7 +204,7 @@ export default function TrackerPage() {
               <Activity className="w-6 h-6" />
             </div>
             <div>
-              <span className="text-xs text-slate-500 font-medium">Diaper Output Today</span>
+              <span className="text-xs text-slate-500 font-medium">{t('tracker_today_diapers')}</span>
               <div className="text-2xl font-black text-slate-900">{summary.todayDiaperCount} changes</div>
               <span className="text-[10px] text-slate-400">
                 {summary.wetDiapers} wet • {summary.dirtyDiapers} dirty
@@ -224,7 +220,7 @@ export default function TrackerPage() {
         <div className="lg:col-span-1 space-y-4">
           <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-5">
             <div>
-              <h2 className="text-base font-bold text-slate-900">Record Activity</h2>
+              <h2 className="text-base font-bold text-slate-900">{t('tracker_record_heading')}</h2>
               <p className="text-xs text-slate-500">Select entry type to record</p>
             </div>
 
@@ -240,7 +236,7 @@ export default function TrackerPage() {
                 }`}
               >
                 <Baby className="w-4 h-4" />
-                <span>Feeding</span>
+                <span>{t('tracker_type_feed')}</span>
               </button>
 
               <button
@@ -253,7 +249,7 @@ export default function TrackerPage() {
                 }`}
               >
                 <Moon className="w-4 h-4" />
-                <span>Sleep / Nap</span>
+                <span>{t('tracker_type_sleep')}</span>
               </button>
 
               <button
@@ -266,7 +262,7 @@ export default function TrackerPage() {
                 }`}
               >
                 <Activity className="w-4 h-4" />
-                <span>Diaper</span>
+                <span>{t('tracker_type_diaper')}</span>
               </button>
 
               <button
@@ -279,7 +275,7 @@ export default function TrackerPage() {
                 }`}
               >
                 <Pill className="w-4 h-4" />
-                <span>Vitamins</span>
+                <span>{t('tracker_type_med')}</span>
               </button>
             </div>
 
@@ -403,7 +399,7 @@ export default function TrackerPage() {
           <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 text-xs space-y-3">
             <div className="flex items-center gap-1.5 font-bold text-slate-800">
               <ShieldCheck className="w-4 h-4 text-teal-600" />
-              <span>Log Retention Policy (WHO Standard)</span>
+              <span>{t('tracker_retention_heading')}</span>
             </div>
             <p className="text-[11px] text-slate-500 leading-relaxed">
               Care records are confidential and not stored indefinitely without a user purpose. Purge older records anytime:
@@ -425,7 +421,7 @@ export default function TrackerPage() {
                 onClick={handlePurgeLogs}
                 className="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs transition"
               >
-                Purge
+                {t('tracker_purge_btn')}
               </button>
             </div>
           </div>
@@ -434,7 +430,7 @@ export default function TrackerPage() {
         {/* Right Column: Timeline / History Feed */}
         <div className="lg:col-span-2 space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-base font-bold text-slate-900">Activity Timeline</h2>
+            <h2 className="text-base font-bold text-slate-900">{t('tracker_timeline_heading')}</h2>
 
             {/* Filter buttons */}
             <div className="flex flex-wrap gap-1 text-xs">

@@ -1,136 +1,290 @@
-// MaatruSetu Localized Translation Dictionary
-// Rule: Every user-facing label in translation keys (English for now, extensible for regional languages)
+// MaatruSetu Multilingual Translation Dictionary (English, Hindi, Spanish)
+import { useLanguage } from '@/context/LanguageContext';
+import { SupportedLanguage } from '@/locales/translations';
 
-export const maatrusetuTranslationsEn = {
-  // Navigation & Branding
-  nav_title: 'MaatruSetu',
-  badge_new: 'Active Care',
-  hero_badge: 'Maternal & Newborn 42-Day Continuum of Care',
-  page_title: 'MaatruSetu Care Dashboard',
-  page_subtitle: 'Tracking postpartum recovery, infant vitality milestones, and essential check-ins across the critical 42-day window.',
-
-  // Profile Switching & Directory
-  select_pair_label: 'Registered Mother & Newborn Pairs',
-  switch_pair_button: 'Select Profile',
-  register_new_button: '+ Register Mother & Newborn',
-  active_record_badge: 'Active Profile',
-
-  // Mother Profile
-  mother_profile_title: 'Mother Profile',
-  mother_name_label: 'Mother’s Name',
-  mother_age_label: 'Age',
-  years_old: 'years',
-  rch_id_label: 'RCH / Health ID',
-
-  // Newborn Profile
-  newborn_profile_title: 'Newborn Profile',
-  newborn_name_label: 'Baby’s Name',
-  newborn_sex_label: 'Sex',
-  sex_female: 'Female',
-  sex_male: 'Male',
-  sex_other: 'Other',
-  birth_date_label: 'Date of Birth',
-  baby_age_in_days: 'Age: Day {day}',
-
-  // Birth Metrics
-  birth_metrics_title: 'Birth & Gestational Metrics',
-  birth_weight_label: 'Birth Weight',
-  birth_weight_unit: 'kg',
-  low_birth_weight_badge: 'Low Birth Weight (< 2.5 kg)',
-  normal_birth_weight_badge: 'Normal Weight',
-  gestational_age_label: 'Gestational Age',
-  gestational_age_unit: 'weeks',
-  preterm_badge: 'Preterm (< 37 wks)',
-  term_badge: 'Full Term (≥ 37 wks)',
-
-  // Care Day Out of 42
-  care_day_card_title: 'Continuum of Care Timeline',
-  care_day_counter: 'Day {current} of {total}',
-  care_day_description: 'The first 42 days (6 weeks) postpartum represent the most vital period for maternal healing and neonatal survival.',
-  care_day_progress_label: 'Care Window Progress',
-  care_day_days_remaining: '{count} days remaining in 42-day window',
-  care_day_completed: '42-day postnatal care milestone completed',
-
-  // Health Status
-  health_status_title: 'Clinical Health Status',
-  status_stable: 'Stable',
-  status_attention_needed: 'Attention Needed',
-  status_critical: 'Critical Alert',
-  status_note_label: 'Clinical Observation',
-
-  // Next Follow-Up
-  next_followup_title: 'Next Scheduled Follow-up',
-  followup_date_label: 'Date',
-  followup_type_label: 'Visit Type',
-  followup_worker_label: 'Assigned Healthcare Worker',
-
-  // Next Vaccination
-  next_vaccination_title: 'Next Immunization',
-  vaccine_name_label: 'Vaccine / Dose',
-  vaccine_date_label: 'Due Date',
-  vaccine_status_pending: 'Scheduled',
-  vaccine_status_completed: 'Administered',
-  vaccine_status_overdue: 'Overdue',
-
-  // Call to Action
-  start_checkin_button: 'Start Check-in',
-  start_checkin_description: 'Initiate daily postpartum & neonatal symptom screening questionnaire',
-  checkin_link_notice: 'Check-in gateway ready. Connects to clinical telemetry in future stage.',
-
-  // Registration Form Modal
-  form_modal_title: 'Register Mother + Newborn',
-  form_modal_subtitle: 'Enter baseline maternal and neonatal delivery details to initialize 42-day care tracking.',
-  form_section_mother: '1. Mother’s Information',
-  form_section_newborn: '2. Newborn’s Information',
-  form_section_clinical: '3. Initial Clinical State & Follow-up',
-  
-  form_mother_name: 'Mother’s Full Name *',
-  form_mother_name_placeholder: 'e.g. Sunita Devi',
-  form_mother_age: 'Mother’s Age (years) *',
-  form_mother_age_placeholder: 'e.g. 26',
-  form_mother_phone: 'Contact Phone Number',
-  form_mother_phone_placeholder: 'e.g. +91 98765 43210',
-  form_rch_id: 'RCH Registration ID',
-  form_rch_id_placeholder: 'e.g. RCH-2026-0894',
-
-  form_newborn_name: 'Baby’s Name *',
-  form_newborn_name_placeholder: 'e.g. Baby of Sunita / Aarav',
-  form_newborn_sex: 'Sex *',
-  form_birth_date: 'Date of Birth *',
-  form_birth_weight: 'Birth Weight (in kg) *',
-  form_birth_weight_placeholder: 'e.g. 2.85',
-  form_gestational_age: 'Gestational Age (weeks) *',
-  form_gestational_age_placeholder: 'e.g. 39',
-
-  form_health_status: 'Initial Health Status *',
-  form_health_note: 'Clinical Observation / Risk Factors',
-  form_health_note_placeholder: 'e.g. Good latch, cord clean, jaundice check normal',
-
-  form_followup_type: 'Next Follow-up Visit Type *',
-  form_followup_type_placeholder: 'e.g. Day 7 Postnatal Home Visit - ASHA',
-  form_followup_date: 'Next Follow-up Date *',
-
-  form_vaccine_name: 'Next Vaccine Name *',
-  form_vaccine_name_placeholder: 'e.g. OPV-1 + Pentavalent-1 + Rotavirus-1',
-  form_vaccine_date: 'Vaccination Due Date *',
-
-  form_cancel_button: 'Cancel',
-  form_submit_button: 'Register & Launch Dashboard',
-  form_success_message: 'Mother and newborn successfully registered into MaatruSetu!',
-  form_validation_error: 'Please fill in all required fields marked with *.',
-
-  // Empty State
-  empty_state_title: 'No Registered Pairs Yet',
-  empty_state_desc: 'Register a mother and newborn to initialize the 42-day postnatal care timeline.'
+export const maatrusetuTranslations: Record<SupportedLanguage, Record<string, string>> = {
+  en: {
+    nav_title: 'MaatruSetu',
+    badge_new: 'Active Care',
+    hero_badge: 'Maternal & Newborn 42-Day Continuum of Care',
+    page_title: 'MaatruSetu Care Dashboard',
+    page_subtitle: 'Tracking postpartum recovery, infant vitality milestones, and essential check-ins across the critical 42-day window.',
+    select_pair_label: 'Registered Mother & Newborn Pairs',
+    switch_pair_button: 'Select Profile',
+    register_new_button: '+ Register Mother & Newborn',
+    active_record_badge: 'Active Profile',
+    mother_profile_title: 'Mother Profile',
+    mother_name_label: 'Mother’s Name',
+    mother_age_label: 'Age',
+    years_old: 'years',
+    rch_id_label: 'RCH / Health ID',
+    newborn_profile_title: 'Newborn Profile',
+    newborn_name_label: 'Baby’s Name',
+    newborn_sex_label: 'Sex',
+    sex_female: 'Female',
+    sex_male: 'Male',
+    sex_other: 'Other',
+    birth_date_label: 'Date of Birth',
+    baby_age_in_days: 'Age: Day {day}',
+    birth_metrics_title: 'Birth & Gestational Metrics',
+    birth_weight_label: 'Birth Weight',
+    birth_weight_unit: 'kg',
+    low_birth_weight_badge: 'Low Birth Weight (< 2.5 kg)',
+    normal_birth_weight_badge: 'Normal Weight',
+    gestational_age_label: 'Gestational Age',
+    gestational_age_unit: 'weeks',
+    preterm_badge: 'Preterm (< 37 wks)',
+    term_badge: 'Full Term (≥ 37 wks)',
+    care_day_card_title: 'Continuum of Care Timeline',
+    care_day_counter: 'Day {current} of {total}',
+    care_day_description: 'The first 42 days (6 weeks) postpartum represent the most vital period for maternal healing and neonatal survival.',
+    care_day_progress_label: 'Care Window Progress',
+    care_day_days_remaining: '{count} days remaining in 42-day window',
+    care_day_completed: '42-day postnatal care milestone completed',
+    health_status_title: 'Clinical Health Status',
+    status_stable: 'Stable',
+    status_attention_needed: 'Attention Needed',
+    status_critical: 'Critical Alert',
+    status_note_label: 'Clinical Observation',
+    start_checkin_button: 'Start Check-in',
+    start_checkin_description: 'Initiate daily postpartum & neonatal symptom screening questionnaire',
+    checkin_link_notice: 'Check-in gateway ready. Connects to clinical telemetry in future stage.',
+    form_modal_title: 'Register Mother + Newborn',
+    form_modal_subtitle: 'Enter baseline maternal and neonatal delivery details to initialize 42-day care tracking.',
+    form_section_mother: '1. Mother’s Information',
+    form_section_newborn: '2. Newborn’s Information',
+    form_section_clinical: '3. Initial Clinical State & Follow-up',
+    form_mother_name: 'Mother’s Full Name *',
+    form_mother_name_placeholder: 'e.g. Sunita Devi',
+    form_mother_age: 'Mother’s Age (years) *',
+    form_mother_age_placeholder: 'e.g. 26',
+    form_mother_phone: 'Contact Phone Number',
+    form_mother_phone_placeholder: 'e.g. +91 98765 43210',
+    form_rch_id: 'RCH Registration ID',
+    form_rch_id_placeholder: 'e.g. RCH-2026-0894',
+    form_newborn_name: 'Baby’s Name *',
+    form_newborn_name_placeholder: 'e.g. Baby of Sunita / Aarav',
+    form_newborn_sex: 'Sex *',
+    form_birth_date: 'Date of Birth *',
+    form_birth_weight: 'Birth Weight (in kg) *',
+    form_birth_weight_placeholder: 'e.g. 2.85',
+    form_gestational_age: 'Gestational Age (weeks) *',
+    form_gestational_age_placeholder: 'e.g. 39',
+    form_health_status: 'Initial Health Status *',
+    form_health_note: 'Clinical Observation / Risk Factors',
+    form_health_note_placeholder: 'e.g. Good latch, cord clean, jaundice check normal',
+    form_followup_type: 'Next Follow-up Visit Type *',
+    form_followup_type_placeholder: 'e.g. Day 7 Postnatal Home Visit - ASHA',
+    form_followup_date: 'Next Follow-up Date *',
+    form_vaccine_name: 'Next Vaccine Name *',
+    form_vaccine_name_placeholder: 'e.g. OPV-1 + Pentavalent-1 + Rotavirus-1',
+    form_vaccine_date: 'Vaccination Due Date *',
+    form_cancel_button: 'Cancel',
+    form_submit_button: 'Register & Launch Dashboard',
+    form_success_message: 'Mother and newborn successfully registered into MaatruSetu!',
+    form_validation_error: 'Please fill in all required fields marked with *.',
+    empty_state_title: 'No Registered Pairs Yet',
+    empty_state_desc: 'Register a mother and newborn to initialize the 42-day postnatal care timeline.'
+  },
+  hi: {
+    nav_title: 'मातृसेतु',
+    badge_new: 'सक्रिय देखभाल',
+    hero_badge: 'मातृ एवं नवजात 42-दिवसीय निरंतर देखभाल सेतु',
+    page_title: 'मातृसेतु देखभाल डैशबोर्ड',
+    page_subtitle: 'प्रसवोत्तर रिकवरी, शिशु स्वास्थ्य पड़ाव और महत्वपूर्ण 42 दिनों की निरंतर स्वास्थ्य निगरानी।',
+    select_pair_label: 'पंजीकृत माता एवं शिशु जोड़ियां',
+    switch_pair_button: 'प्रोफ़ाइल चुनें',
+    register_new_button: '+ माता एवं नवजात का पंजीकरण करें',
+    active_record_badge: 'सक्रिय प्रोफ़ाइल',
+    mother_profile_title: 'माता का विवरण',
+    mother_name_label: 'माता का नाम',
+    mother_age_label: 'आयु',
+    years_old: 'वर्ष',
+    rch_id_label: 'आरसीएच (RCH) स्वास्थ्य आईडी',
+    newborn_profile_title: 'नवजात शिशु का विवरण',
+    newborn_name_label: 'शिशु का नाम',
+    newborn_sex_label: 'लिंग',
+    sex_female: 'कन्या (लड़की)',
+    sex_male: 'बालक (लड़का)',
+    sex_other: 'अन्य',
+    birth_date_label: 'जन्म तिथि',
+    baby_age_in_days: 'आयु: दिन {day}',
+    birth_metrics_title: 'जन्म एवं गर्भावस्था माप',
+    birth_weight_label: 'जन्म के समय वजन',
+    birth_weight_unit: 'किग्रा',
+    low_birth_weight_badge: 'कम जन्म वजन (< 2.5 किग्रा)',
+    normal_birth_weight_badge: 'सामान्य वजन',
+    gestational_age_label: 'गर्भकालीन आयु',
+    gestational_age_unit: 'सप्ताह',
+    preterm_badge: 'समय से पहले जन्म (< 37 सप्ताह)',
+    term_badge: 'पूर्ण अवधि जन्म (≥ 37 सप्ताह)',
+    care_day_card_title: 'निरंतर देखभाल समयरेखा',
+    care_day_counter: '42 में से दिन {current}',
+    care_day_description: 'प्रसव के बाद के पहले 42 दिन (6 सप्ताह) माँ के स्वास्थ्य सुधार और नवजात शिशु के जीवन के लिए सबसे महत्वपूर्ण समय होते हैं।',
+    care_day_progress_label: 'देखभाल प्रगति',
+    care_day_days_remaining: '42-दिवसीय देखभाल अवधि में {count} दिन शेष',
+    care_day_completed: '42-दिवसीय प्रसवोत्तर देखभाल पड़ाव पूर्ण हुआ',
+    health_status_title: 'स्वास्थ्य स्थिति',
+    status_stable: 'स्थिर (सामान्य)',
+    status_attention_needed: 'विशेष ध्यान आवश्यक',
+    status_critical: 'आपातकालीन चेतावनी',
+    status_note_label: 'चिकित्सीय अवलोकन',
+    start_checkin_button: 'दैनिक जाँच शुरू करें (Check-in)',
+    start_checkin_description: 'दैनिक प्रसवोत्तर एवं नवजात स्वास्थ्य स्क्रीनिंग प्रश्नावली शुरू करें',
+    checkin_link_notice: 'चेक-इन गेटवे सक्रिय। आगामी चरण में क्लिनिकल टेलीमेट्री से जुड़ेगा।',
+    form_modal_title: 'माता एवं नवजात का पंजीकरण',
+    form_modal_subtitle: '42-दिवसीय देखभाल ट्रैकिंग प्रारंभ करने के लिए प्रसव एवं शिशु का विवरण दर्ज करें।',
+    form_section_mother: '1. माता की जानकारी',
+    form_section_newborn: '2. नवजात शिशु की जानकारी',
+    form_section_clinical: '3. प्राथमिक स्वास्थ्य स्थिति एवं आगामी भेंट',
+    form_mother_name: 'माता का पूरा नाम *',
+    form_mother_name_placeholder: 'उदा. सुनीता देवी',
+    form_mother_age: 'माता की आयु (वर्ष) *',
+    form_mother_age_placeholder: 'उदा. 26',
+    form_mother_phone: 'संपर्क फोन नंबर',
+    form_mother_phone_placeholder: 'उदा. +91 98765 43210',
+    form_rch_id: 'आरसीएच (RCH) पंजीकरण संख्या',
+    form_rch_id_placeholder: 'उदा. RCH-2026-0894',
+    form_newborn_name: 'शिशु का नाम *',
+    form_newborn_name_placeholder: 'उदा. आरव / सुनीता का शिशु',
+    form_newborn_sex: 'लिंग *',
+    form_birth_date: 'जन्म तिथि *',
+    form_birth_weight: 'जन्म वजन (किग्रा में) *',
+    form_birth_weight_placeholder: 'उदा. 2.85',
+    form_gestational_age: 'गर्भकालीन आयु (सप्ताह) *',
+    form_gestational_age_placeholder: 'उदा. 39',
+    form_health_status: 'प्रारंभिक स्वास्थ्य स्थिति *',
+    form_health_note: 'चिकित्सीय टिप्पणी / जोखिम कारक',
+    form_health_note_placeholder: 'उदा. अच्छा स्तनपान, नाभि स्वच्छ, पीलिया परीक्षण सामान्य',
+    form_followup_type: 'अगली जाँच भेंट का प्रकार *',
+    form_followup_type_placeholder: 'उदा. दिन 7 आशा गृह भेंट',
+    form_followup_date: 'अगली जाँच की तारीख *',
+    form_vaccine_name: 'अगले टीके का नाम *',
+    form_vaccine_name_placeholder: 'उदा. ओपीवी-1 + पेंटावेलेंट-1 + रोटावायरस-1',
+    form_vaccine_date: 'टीकाकरण की देय तिथि *',
+    form_cancel_button: 'रद्द करें',
+    form_submit_button: 'पंजीकरण करें एवं डैशबोर्ड खोलें',
+    form_success_message: 'माता एवं नवजात का सफलतापूर्वक मातृसेतु में पंजीकरण हो गया!',
+    form_validation_error: '* से चिह्नित सभी आवश्यक फ़ील्ड भरें।',
+    empty_state_title: 'कोई जोड़ी पंजीकृत नहीं है',
+    empty_state_desc: '42-दिवसीय देखभाल समयरेखा शुरू करने के लिए माता और नवजात शिशु का पंजीकरण करें।'
+  },
+  es: {
+    nav_title: 'MaatruSetu',
+    badge_new: 'Atención Activa',
+    hero_badge: 'Continuidad de Atención Materno-Neonatal de 42 Días',
+    page_title: 'Panel de Control MaatruSetu',
+    page_subtitle: 'Seguimiento de la recuperación posparto, hitos de vitalidad infantil y controles clave durante la ventana crítica de 42 días.',
+    select_pair_label: 'Pares Madre y Bebé Registrados',
+    switch_pair_button: 'Seleccionar Perfil',
+    register_new_button: '+ Registrar Madre y Recién Nacido',
+    active_record_badge: 'Perfil Activo',
+    mother_profile_title: 'Perfil de la Madre',
+    mother_name_label: 'Nombre de la Madre',
+    mother_age_label: 'Edad',
+    years_old: 'años',
+    rch_id_label: 'Identificación de Salud (RCH)',
+    newborn_profile_title: 'Perfil del Recién Nacido',
+    newborn_name_label: 'Nombre del Bebé',
+    newborn_sex_label: 'Sexo',
+    sex_female: 'Femenino',
+    sex_male: 'Masculino',
+    sex_other: 'Otro',
+    birth_date_label: 'Fecha de Nacimiento',
+    baby_age_in_days: 'Edad: Día {day}',
+    birth_metrics_title: 'Métricas de Nacimiento y Gestación',
+    birth_weight_label: 'Peso al Nacer',
+    birth_weight_unit: 'kg',
+    low_birth_weight_badge: 'Bajo Peso al Nacer (< 2.5 kg)',
+    normal_birth_weight_badge: 'Peso Normal',
+    gestational_age_label: 'Edad Gestacional',
+    gestational_age_unit: 'semanas',
+    preterm_badge: 'Prematuro (< 37 sem)',
+    term_badge: 'A Término (≥ 37 sem)',
+    care_day_card_title: 'Línea de Tiempo de Atención Continua',
+    care_day_counter: 'Día {current} de {total}',
+    care_day_description: 'Los primeros 42 días (6 semanas) posparto representan el período más vital para la recuperación materna y la supervivencia neonatal.',
+    care_day_progress_label: 'Progreso de la Ventana de Atención',
+    care_day_days_remaining: '{count} días restantes en la ventana de 42 días',
+    care_day_completed: 'Hito de atención posparto de 42 días completado',
+    health_status_title: 'Estado Clínico de Salud',
+    status_stable: 'Estable',
+    status_attention_needed: 'Atención Requerida',
+    status_critical: 'Alerta Crítica',
+    status_note_label: 'Observación Médica',
+    start_checkin_button: 'Iniciar Chequeo Diario',
+    start_checkin_description: 'Comenzar cuestionario de detección de síntomas posparto y neonatales',
+    checkin_link_notice: 'Pasarela de chequeo activa. Conectará con telemetría clínica en fases futuras.',
+    form_modal_title: 'Registrar Madre y Recién Nacido',
+    form_modal_subtitle: 'Ingrese los datos del parto para iniciar el seguimiento de 42 días.',
+    form_section_mother: '1. Datos de la Madre',
+    form_section_newborn: '2. Datos del Bebé',
+    form_section_clinical: '3. Estado Clínico Inicial y Citas',
+    form_mother_name: 'Nombre Completo de la Madre *',
+    form_mother_name_placeholder: 'ej. Sunita Devi',
+    form_mother_age: 'Edad de la Madre (años) *',
+    form_mother_age_placeholder: 'ej. 26',
+    form_mother_phone: 'Teléfono de Contacto',
+    form_mother_phone_placeholder: 'ej. +91 98765 43210',
+    form_rch_id: 'Número de Registro RCH',
+    form_rch_id_placeholder: 'ej. RCH-2026-0894',
+    form_newborn_name: 'Nombre del Bebé *',
+    form_newborn_name_placeholder: 'ej. Bebé de Sunita / Aarav',
+    form_newborn_sex: 'Sexo *',
+    form_birth_date: 'Fecha de Nacimiento *',
+    form_birth_weight: 'Peso al Nacer (en kg) *',
+    form_birth_weight_placeholder: 'ej. 2.85',
+    form_gestational_age: 'Edad Gestacional (semanas) *',
+    form_gestational_age_placeholder: 'ej. 39',
+    form_health_status: 'Estado de Salud Inicial *',
+    form_health_note: 'Observación Clínica / Factores de Riesgo',
+    form_health_note_placeholder: 'ej. Buen agarre, cordón limpio, ictericia normal',
+    form_followup_type: 'Tipo de Próxima Consulta *',
+    form_followup_type_placeholder: 'ej. Visita Domiciliaria Día 7 - ASHA',
+    form_followup_date: 'Fecha de la Próxima Consulta *',
+    form_vaccine_name: 'Nombre de la Próxima Vacuna *',
+    form_vaccine_name_placeholder: 'ej. OPV-1 + Pentavalente-1 + Rotavirus-1',
+    form_vaccine_date: 'Fecha Límite de Vacunación *',
+    form_cancel_button: 'Cancelar',
+    form_submit_button: 'Registrar y Abrir Panel',
+    form_success_message: '¡Madre y recién nacido registrados exitosamente en MaatruSetu!',
+    form_validation_error: 'Por favor complete todos los campos requeridos marcados con *.',
+    empty_state_title: 'No hay pares registrados',
+    empty_state_desc: 'Registre una madre y su recién nacido para iniciar la línea de tiempo de atención de 42 días.'
+  }
 };
 
-export type MaatruSetuTranslationKey = keyof typeof maatrusetuTranslationsEn;
+export type MaatruSetuTranslationKey = keyof typeof maatrusetuTranslations.en;
 
 /**
- * Access translation with placeholder interpolation e.g. {current}, {total}
+ * Hook to access reactive translations synced with the global app language
  */
+export function useMaatruSetuTranslation() {
+  const { language } = useLanguage();
+
+  const t = (key: MaatruSetuTranslationKey, params?: Record<string, string | number>): string => {
+    const langDict = maatrusetuTranslations[language] || maatrusetuTranslations.en;
+    let str = langDict[key] || maatrusetuTranslations.en[key] || (key as string);
+    if (params) {
+      Object.entries(params).forEach(([placeholder, value]) => {
+        str = str.replace(new RegExp(`\\{${placeholder}\\}`, 'g'), String(value));
+      });
+    }
+    return str;
+  };
+
+  return { t, language };
+}
+
+// Global fallback function for static contexts
 export function t(key: MaatruSetuTranslationKey, params?: Record<string, string | number>): string {
-  let str: string = maatrusetuTranslationsEn[key] || (key as string);
+  let lang: SupportedLanguage = 'en';
+  if (typeof window !== 'undefined') {
+    const saved = localStorage.getItem('seva_lang') as SupportedLanguage;
+    if (saved && (saved === 'en' || saved === 'hi' || saved === 'es')) lang = saved;
+  }
+  const langDict = maatrusetuTranslations[lang] || maatrusetuTranslations.en;
+  let str = langDict[key] || maatrusetuTranslations.en[key] || (key as string);
   if (params) {
     Object.entries(params).forEach(([placeholder, value]) => {
       str = str.replace(new RegExp(`\\{${placeholder}\\}`, 'g'), String(value));

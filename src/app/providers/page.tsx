@@ -8,17 +8,16 @@ import {
   MapPin, 
   Phone, 
   Mail, 
-  Globe, 
   CheckCircle2, 
   Video, 
-  ShieldCheck, 
   Star, 
-  Filter, 
   CalendarPlus
 } from 'lucide-react';
 import { Provider } from '@/types';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function ProvidersPage() {
+  const { t } = useLanguage();
   const [providers, setProviders] = useState<Provider[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSpecialty, setSelectedSpecialty] = useState('all');
@@ -52,11 +51,11 @@ export default function ProvidersPage() {
   };
 
   const specialties = [
-    { id: 'all', label: 'All Specialties' },
-    { id: 'Midwifery', label: 'Midwives & Birth Centers' },
-    { id: 'Maternal-Fetal', label: 'OB-GYN & MFM' },
-    { id: 'Lactation', label: 'Lactation Consultants (IBCLC)' },
-    { id: 'Pediatric', label: 'Pediatricians' }
+    { id: 'all', label: t('providers_spec_all') },
+    { id: 'Midwifery', label: t('providers_spec_midwife') },
+    { id: 'Maternal-Fetal', label: t('providers_spec_mfm') },
+    { id: 'Lactation', label: t('providers_spec_lactation') },
+    { id: 'Pediatric', label: t('providers_spec_pediatric') }
   ];
 
   const languages = ['all', 'English', 'Spanish', 'Hindi', 'Mandarin', 'Vietnamese'];
@@ -67,13 +66,13 @@ export default function ProvidersPage() {
       <div className="max-w-3xl space-y-3">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-800 text-xs font-semibold">
           <Compass className="w-3.5 h-3.5" />
-          <span>Care Provider Directory</span>
+          <span>{t('providers_tag')}</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-          Find Verified Maternal & Pediatric Specialists
+          {t('providers_title')}
         </h1>
         <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-          Search certified nurse-midwives, high-risk obstetricians, lactation consultants, and pediatric clinics. Every listing is reviewed for active licensing and credential verification.
+          {t('providers_desc')}
         </p>
       </div>
 
@@ -85,7 +84,7 @@ export default function ProvidersPage() {
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Search by doctor, clinic, city or service..."
+              placeholder={t('providers_search_placeholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-rose-500"
@@ -132,12 +131,12 @@ export default function ProvidersPage() {
             />
             <span className="flex items-center gap-1">
               <Video className="w-3.5 h-3.5 text-teal-600" />
-              <span>Telehealth / Video Consultations Available</span>
+              <span>{t('providers_telehealth_toggle')}</span>
             </span>
           </label>
 
           <span className="text-slate-500">
-            Showing <strong className="text-slate-800">{providers.length}</strong> verified provider{providers.length !== 1 ? 's' : ''}
+            {t('providers_showing_count', { count: providers.length })}
           </span>
         </div>
       </div>
@@ -168,7 +167,7 @@ export default function ProvidersPage() {
                       <h3 className="text-lg font-bold text-slate-900">{provider.name}</h3>
                       <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 text-[10px] font-bold" title="Clinically verified listing">
                         <CheckCircle2 className="w-3 h-3 text-teal-600" />
-                        <span>Verified</span>
+                        <span>{t('providers_verified_badge')}</span>
                       </span>
                     </div>
                     <p className="text-xs font-semibold text-rose-600 mt-0.5">
@@ -218,12 +217,12 @@ export default function ProvidersPage() {
                 <div className="flex flex-wrap items-center gap-1.5 pt-2">
                   {provider.telehealthAvailable && (
                     <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-700 text-[11px] font-medium border border-teal-200/60">
-                      <Video className="w-3 h-3 text-teal-600" /> Telehealth Available
+                      <Video className="w-3 h-3 text-teal-600" /> {t('providers_telehealth_toggle')}
                     </span>
                   )}
                   {provider.acceptsInsurance && (
                     <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[11px] font-medium">
-                      Insurance Accepted
+                      {t('providers_insurance_badge')}
                     </span>
                   )}
                   {provider.languages.map((lang) => (
@@ -235,7 +234,7 @@ export default function ProvidersPage() {
 
                 {/* Services list */}
                 <div className="pt-2">
-                  <div className="text-[11px] font-semibold text-slate-700 mb-1">Key Services:</div>
+                  <div className="text-[11px] font-semibold text-slate-700 mb-1">{t('providers_services_label')}</div>
                   <div className="flex flex-wrap gap-1">
                     {provider.services.map((svc, idx) => (
                       <span key={idx} className="text-[11px] bg-rose-50 text-rose-800 px-2 py-0.5 rounded">
@@ -249,7 +248,7 @@ export default function ProvidersPage() {
               {/* Action buttons */}
               <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
                 <span className="text-[11px] text-slate-400">
-                  Verified {provider.verificationDate}
+                  {t('providers_verified_badge')} {provider.verificationDate}
                 </span>
 
                 <div className="flex items-center gap-2">
@@ -257,14 +256,14 @@ export default function ProvidersPage() {
                     href={`tel:${provider.contactDetails.phone}`}
                     className="px-3 py-1.5 rounded-lg border border-slate-300 text-slate-700 font-semibold hover:bg-slate-50 transition"
                   >
-                    Call Office
+                    {t('providers_call_office')}
                   </a>
                   <Link
                     href={`/organizer?providerId=${provider.id}&providerName=${encodeURIComponent(provider.name)}`}
                     className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-semibold shadow-sm transition"
                   >
                     <CalendarPlus className="w-3.5 h-3.5" />
-                    <span>Save to Visit Organizer</span>
+                    <span>{t('providers_save_to_organizer')}</span>
                   </Link>
                 </div>
               </div>

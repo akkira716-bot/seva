@@ -23,8 +23,11 @@ import {
   Check
 } from 'lucide-react';
 import { Appointment, User } from '@/types';
+import { useLanguage } from '@/context/LanguageContext';
+import { SupportedLanguage } from '@/locales/translations';
 
 function OrganizerContent() {
+  const { t, language, setLanguage } = useLanguage();
   const searchParams = useSearchParams();
   const providerIdParam = searchParams.get('providerId');
   const providerNameParam = searchParams.get('providerName');
@@ -256,13 +259,13 @@ function OrganizerContent() {
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 text-rose-800 text-xs font-semibold">
             <Calendar className="w-3.5 h-3.5" />
-            <span>Personal Organizer (Stage 2)</span>
+            <span>{t('organizer_tag')}</span>
           </div>
           <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
-            Appointments & Visit Checklists
+            {t('organizer_title')}
           </h1>
           <p className="text-sm text-slate-600 mt-0.5">
-            Organize doctor visits, prep questions to ask, and manage your health record privacy.
+            {t('organizer_desc')}
           </p>
         </div>
 
@@ -298,7 +301,7 @@ function OrganizerContent() {
           }`}
         >
           <Calendar className="w-4 h-4" />
-          <span>My Saved Visits ({appointments.length})</span>
+          <span>{t('organizer_tab_visits')} ({appointments.length})</span>
         </button>
 
         <button
@@ -310,7 +313,7 @@ function OrganizerContent() {
           }`}
         >
           <HelpCircle className="w-4 h-4" />
-          <span>Questions to Ask Doctor</span>
+          <span>{t('organizer_tab_questions')}</span>
         </button>
 
         <button
@@ -322,7 +325,7 @@ function OrganizerContent() {
           }`}
         >
           <Shield className="w-4 h-4" />
-          <span>Account & Privacy Controls</span>
+          <span>{t('organizer_tab_privacy')}</span>
         </button>
       </div>
 
@@ -655,17 +658,19 @@ function OrganizerContent() {
             {/* Language & Notifications */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 border-t border-slate-100">
               <div className="space-y-3">
-                <label className="block text-xs font-bold text-slate-700">Preferred Language</label>
+                <label className="block text-xs font-bold text-slate-700">{t('nav_switch_language')}</label>
                 <select
-                  value={currentUser.preferredLanguage}
-                  onChange={(e) => handleUpdatePreferences({ preferredLanguage: e.target.value })}
+                  value={language}
+                  onChange={(e) => {
+                    const newLang = e.target.value as SupportedLanguage;
+                    setLanguage(newLang);
+                    handleUpdatePreferences({ preferredLanguage: newLang });
+                  }}
                   className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 bg-white text-slate-800 font-medium focus:ring-2 focus:ring-rose-500"
                 >
-                  <option value="en">English</option>
-                  <option value="es">Español (Spanish)</option>
+                  <option value="en">English (US)</option>
                   <option value="hi">हिन्दी (Hindi)</option>
-                  <option value="fr">Français (French)</option>
-                  <option value="zh">中文 (Mandarin)</option>
+                  <option value="es">Español (Spanish)</option>
                 </select>
                 <p className="text-[11px] text-slate-400">Public articles and appointment notices will align with this preference.</p>
               </div>

@@ -24,9 +24,10 @@ import {
   Check
 } from 'lucide-react';
 import { MaatruSetuRecord, computeCareDay } from '@/types/maatrusetu';
-import { t } from '@/lib/maatrusetu/translations';
+import { useMaatruSetuTranslation } from '@/lib/maatrusetu/translations';
 
 export default function MaatruSetuPage() {
+  const { t } = useMaatruSetuTranslation();
   const [records, setRecords] = useState<MaatruSetuRecord[]>([]);
   const [selectedRecordId, setSelectedRecordId] = useState<string>('');
   const [loading, setLoading] = useState(true);

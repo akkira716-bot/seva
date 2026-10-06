@@ -1,21 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { 
   AlertTriangle, 
   ShieldAlert, 
   PhoneCall, 
-  HeartHandshake, 
-  Baby, 
-  Activity, 
-  ArrowRight, 
-  CheckCircle2, 
-  ExternalLink 
+  HeartHandshake
 } from 'lucide-react';
 import { EMERGENCY_PROTOCOLS } from '@/lib/db';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function UrgentHelpPage() {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<'all' | 'maternal' | 'infant' | 'mental_health'>('all');
 
   const filtered = activeTab === 'all' 
@@ -28,13 +24,13 @@ export default function UrgentHelpPage() {
       <div className="p-6 sm:p-8 rounded-3xl bg-rose-900 text-rose-50 border-2 border-rose-800 shadow-xl space-y-4">
         <div className="flex items-center gap-2 text-rose-300 font-extrabold uppercase tracking-wider text-xs">
           <ShieldAlert className="w-5 h-5 text-rose-400" />
-          <span>Emergency & Urgent Clinical Guidance</span>
+          <span>{t('urgent_banner_badge')}</span>
         </div>
         <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-          When to Seek Immediate Medical Evaluation
+          {t('urgent_page_title')}
         </h1>
         <p className="text-sm sm:text-base text-rose-100/90 leading-relaxed max-w-3xl">
-          Certain symptoms during pregnancy, postpartum recovery, or newborn infancy indicate acute medical emergencies such as preeclampsia, hemorrhage, severe neonatal infection, or postpartum crisis. Do not delay care.
+          {t('urgent_page_desc')}
         </p>
 
         {/* Emergency numbers rapid row */}
@@ -44,8 +40,8 @@ export default function UrgentHelpPage() {
             className="p-4 rounded-xl bg-rose-800 hover:bg-rose-700 text-white flex items-center justify-between transition group"
           >
             <div>
-              <div className="text-[11px] text-rose-300 font-medium">Life-Threatening Emergency</div>
-              <div className="text-xl font-black">Call 911</div>
+              <div className="text-[11px] text-rose-300 font-medium">{t('urgent_label_911')}</div>
+              <div className="text-xl font-black">{t('urgent_call_911')}</div>
             </div>
             <PhoneCall className="w-5 h-5 text-rose-300 group-hover:scale-110 transition-transform" />
           </a>
@@ -55,8 +51,8 @@ export default function UrgentHelpPage() {
             className="p-4 rounded-xl bg-rose-800 hover:bg-rose-700 text-white flex items-center justify-between transition group"
           >
             <div>
-              <div className="text-[11px] text-rose-300 font-medium">Maternal Health Hotline</div>
-              <div className="text-sm font-black">1-833-9-HELP4MOMS</div>
+              <div className="text-[11px] text-rose-300 font-medium">{t('urgent_label_hotline')}</div>
+              <div className="text-sm font-black">{t('urgent_call_hotline')}</div>
             </div>
             <PhoneCall className="w-5 h-5 text-rose-300 group-hover:scale-110 transition-transform" />
           </a>
@@ -66,8 +62,8 @@ export default function UrgentHelpPage() {
             className="p-4 rounded-xl bg-rose-800 hover:bg-rose-700 text-white flex items-center justify-between transition group"
           >
             <div>
-              <div className="text-[11px] text-rose-300 font-medium">Mental Health & Crisis Lifeline</div>
-              <div className="text-xl font-black">Call / Text 988</div>
+              <div className="text-[11px] text-rose-300 font-medium">{t('urgent_label_988')}</div>
+              <div className="text-xl font-black">{t('urgent_call_988')}</div>
             </div>
             <PhoneCall className="w-5 h-5 text-rose-300 group-hover:scale-110 transition-transform" />
           </a>
@@ -84,7 +80,7 @@ export default function UrgentHelpPage() {
               : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
           }`}
         >
-          All Urgent Signs
+          {t('urgent_tab_all')}
         </button>
         <button
           onClick={() => setActiveTab('maternal')}
@@ -94,7 +90,7 @@ export default function UrgentHelpPage() {
               : 'bg-rose-50 text-rose-700 hover:bg-rose-100'
           }`}
         >
-          Maternal & Postpartum Warning Signs
+          {t('urgent_tab_maternal')}
         </button>
         <button
           onClick={() => setActiveTab('infant')}
@@ -104,7 +100,7 @@ export default function UrgentHelpPage() {
               : 'bg-teal-50 text-teal-800 hover:bg-teal-100'
           }`}
         >
-          Infant Emergencies (0–12 Mo)
+          {t('urgent_tab_infant')}
         </button>
         <button
           onClick={() => setActiveTab('mental_health')}
@@ -114,7 +110,7 @@ export default function UrgentHelpPage() {
               : 'bg-purple-50 text-purple-800 hover:bg-purple-100'
           }`}
         >
-          Emotional Distress & PMAD
+          {t('urgent_tab_mental')}
         </button>
       </div>
 
@@ -146,7 +142,7 @@ export default function UrgentHelpPage() {
             {/* Red flags list */}
             <div>
               <div className="text-xs font-bold uppercase tracking-wider text-rose-700 mb-2">
-                Critical Red Flag Symptoms
+                {t('articles_urgent_indicators')}
               </div>
               <ul className="space-y-2">
                 {protocol.redFlags.map((flag, idx) => (
@@ -161,7 +157,7 @@ export default function UrgentHelpPage() {
             {/* Action and Hotline */}
             <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
               <div>
-                <strong className="text-slate-900 font-bold block mb-0.5">Required Action:</strong>
+                <strong className="text-slate-900 font-bold block mb-0.5">{t('urgent_req_action')}</strong>
                 <span className="text-slate-600">{protocol.actionRequired}</span>
               </div>
               <div className="shrink-0 p-2 rounded-lg bg-white border border-slate-200 text-teal-900 font-semibold text-[11px] shadow-sm">
@@ -176,9 +172,9 @@ export default function UrgentHelpPage() {
       <div className="p-6 rounded-2xl bg-teal-50/60 border border-teal-200 flex items-start gap-3">
         <HeartHandshake className="w-6 h-6 text-teal-700 shrink-0 mt-0.5" />
         <div className="text-xs text-teal-900 space-y-1">
-          <p className="font-bold text-sm">Always Trust Caregiver Intuition</p>
+          <p className="font-bold text-sm">{t('urgent_trust_intuition_title')}</p>
           <p className="text-teal-800 leading-relaxed">
-            If you feel that something is wrong with yourself or your baby, even if your specific symptom is not explicitly listed on this page, contact your healthcare provider, call the nursery triage line, or seek an evaluation. You are the closest observer of your health and your baby’s wellbeing.
+            {t('urgent_trust_intuition_desc')}
           </p>
         </div>
       </div>
