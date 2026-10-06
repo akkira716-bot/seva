@@ -13,7 +13,8 @@ import {
   ShieldCheck, 
   Menu, 
   X,
-  UserCheck
+  UserCheck,
+  HeartPulse
 } from 'lucide-react';
 
 export default function Navbar() {
@@ -21,6 +22,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   const navLinks = [
+    { href: '/maatrusetu', label: 'MaatruSetu', icon: HeartPulse, badge: 'Care' },
     { href: '/articles', label: 'Guidance & Articles', icon: BookOpen },
     { href: '/providers', label: 'Find Care Providers', icon: Compass },
     { href: '/urgent-help', label: 'Urgent Red Flags', icon: AlertCircle, badge: 'Urgent' },

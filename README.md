@@ -58,6 +58,17 @@ The platform is designed and implemented across four distinct modular stages as 
 - Privacy-preserving operational and security audit logging.
 - HL7 FHIR standard interoperability mock endpoints (`/api/fhir/Patient`, `/api/fhir/Appointment`).
 
+### 🌸 MaatruSetu Maternal & Newborn Care Dashboard (`/maatrusetu`)
+- **Mother Profile**: Maternal age, contact info, and RCH registration identification.
+- **Newborn Profile**: Name, sex, birth date, and chronological age in days.
+- **Birth & Gestational Metrics**: Precise birth weight (with low-birth-weight alerts < 2.5 kg) and gestational age (preterm vs. full-term status).
+- **42-Day Continuum of Care Calculator**: Dynamically computes care day out of the critical 42-day postnatal/neonatal survival window with a visual progress bar.
+- **Clinical Health Status**: Real-time status indicators (Stable / Attention Needed / Critical) with clinical observation notes.
+- **Scheduled Care Tracking**: Next postnatal follow-up visit (date, visit type, assigned healthcare worker) and next due vaccination milestone.
+- **Check-in Action Gateway**: One-click screening check-in launcher.
+- **Registration Form**: Interactive modal to register new mother-newborn pairs into the isolated data store.
+- **Full Translation Abstraction**: All user-facing UI labels localized via extensible translation dictionaries.
+
 ---
 
 ## 🚀 Getting Started
