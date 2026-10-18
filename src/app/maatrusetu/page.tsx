@@ -21,10 +21,28 @@ import {
   ArrowRight,
   Phone,
   Layers,
-  Check
+  Check,
+  Users,
+  FileText,
+  BookOpen,
+  Stethoscope,
+  Lightbulb,
+  Wifi,
+  ShieldCheck,
+  Award
 } from 'lucide-react';
 import { MaatruSetuRecord, computeCareDay } from '@/types/maatrusetu';
 import { useMaatruSetuTranslation } from '@/lib/maatrusetu/translations';
+
+import MaatruAIGuidanceCard from '@/components/maatrusetu/MaatruAIGuidanceCard';
+import FamilyCareMode from '@/components/maatrusetu/FamilyCareMode';
+import DigitalDischargePlanView from '@/components/maatrusetu/DigitalDischargePlanView';
+import RecoveryJournalView from '@/components/maatrusetu/RecoveryJournalView';
+import RecoverySummaryView from '@/components/maatrusetu/RecoverySummaryView';
+import FamilyExplainerView from '@/components/maatrusetu/FamilyExplainerView';
+import OfflineModeView from '@/components/maatrusetu/OfflineModeView';
+import CareCircleView from '@/components/maatrusetu/CareCircleView';
+import CompletionReportView from '@/components/maatrusetu/CompletionReportView';
 
 export default function MaatruSetuPage() {
   const { t } = useMaatruSetuTranslation();
@@ -33,6 +51,11 @@ export default function MaatruSetuPage() {
   const [loading, setLoading] = useState(true);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [showCheckInToast, setShowCheckInToast] = useState(false);
+
+  // Tab State for the 9 Advanced MaatruSetu Clinical Features
+  const [activeFeatureTab, setActiveFeatureTab] = useState<
+    'ai_care' | 'family_tasks' | 'discharge_plan' | 'recovery_journal' | 'doctor_summary' | 'family_explainer' | 'offline_mode' | 'care_circle' | 'completion_report'
+  >('ai_care');
 
   // Form State for Register Mother + Newborn
   const [motherName, setMotherName] = useState('');
@@ -522,6 +545,128 @@ export default function MaatruSetuPage() {
                   <p className="font-bold text-slate-800 mt-0.5 leading-snug">{selectedRecord.nextVaccination.name}</p>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* ========================================================= */}
+          {/* 9 ADVANCED CLINICAL FEATURES NAVIGATION STRIP */}
+          {/* ========================================================= */}
+          <div className="space-y-4 pt-2">
+            <div className="border-b border-slate-200">
+              <div className="flex items-center justify-between pb-2">
+                <span className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-rose-600" />
+                  MaatruSetu Clinical Care Modules
+                </span>
+                <span className="text-[11px] text-slate-400 font-medium hidden sm:inline">
+                  Interactive Caregiver &amp; Patient Tools
+                </span>
+              </div>
+
+              {/* Scrollable / Responsive Tab Navigation Bar */}
+              <div className="flex gap-2 overflow-x-auto pb-3 pt-1 scrollbar-none">
+                {[
+                  { id: 'ai_care', label: 'MaatruAI Care', icon: Sparkles, badge: 'Daily' },
+                  { id: 'family_tasks', label: 'Family Care Mode', icon: Users, badge: 'Tasks' },
+                  { id: 'discharge_plan', label: 'Discharge Plan', icon: FileText, badge: 'Verified' },
+                  { id: 'recovery_journal', label: 'Recovery Journal', icon: BookOpen, badge: 'Daily' },
+                  { id: 'doctor_summary', label: 'Doctor Summary', icon: Stethoscope, badge: 'Brief' },
+                  { id: 'family_explainer', label: 'Family Explainer', icon: Lightbulb, badge: 'Plain' },
+                  { id: 'offline_mode', label: 'Offline Pass', icon: Wifi, badge: 'Local' },
+                  { id: 'care_circle', label: 'Care Circle', icon: ShieldCheck, badge: 'Consent' },
+                  { id: 'completion_report', label: '42-Day Report', icon: Award, badge: 'Diploma' }
+                ].map((tab) => {
+                  const Icon = tab.icon;
+                  const active = activeFeatureTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveFeatureTab(tab.id as any)}
+                      className={`inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition border ${
+                        active
+                          ? 'bg-rose-600 text-white border-rose-600 shadow-md shadow-rose-200 ring-2 ring-rose-300'
+                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50 hover:border-slate-300'
+                      }`}
+                    >
+                      <Icon className={`w-4 h-4 ${active ? 'text-white' : 'text-slate-500'}`} />
+                      <span>{tab.label}</span>
+                      <span
+                        className={`text-[9px] px-1.5 py-0.2 rounded-full font-bold uppercase ${
+                          active
+                            ? 'bg-white/20 text-white'
+                            : 'bg-slate-100 text-slate-500'
+                        }`}
+                      >
+                        {tab.badge}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* ACTIVE TAB VIEW */}
+            <div>
+              {activeFeatureTab === 'ai_care' && (
+                <MaatruAIGuidanceCard
+                  record={selectedRecord}
+                  careDay={careDay?.currentDay || 1}
+                />
+              )}
+
+              {activeFeatureTab === 'family_tasks' && (
+                <FamilyCareMode
+                  recordId={selectedRecord.id}
+                  motherName={selectedRecord.mother.name}
+                />
+              )}
+
+              {activeFeatureTab === 'discharge_plan' && (
+                <DigitalDischargePlanView
+                  recordId={selectedRecord.id}
+                  motherName={selectedRecord.mother.name}
+                />
+              )}
+
+              {activeFeatureTab === 'recovery_journal' && (
+                <RecoveryJournalView
+                  recordId={selectedRecord.id}
+                  careDay={careDay?.currentDay || 1}
+                />
+              )}
+
+              {activeFeatureTab === 'doctor_summary' && (
+                <RecoverySummaryView
+                  recordId={selectedRecord.id}
+                  motherName={selectedRecord.mother.name}
+                  careDay={careDay?.currentDay || 1}
+                />
+              )}
+
+              {activeFeatureTab === 'family_explainer' && (
+                <FamilyExplainerView />
+              )}
+
+              {activeFeatureTab === 'offline_mode' && (
+                <OfflineModeView
+                  record={selectedRecord}
+                  careDay={careDay?.currentDay || 1}
+                />
+              )}
+
+              {activeFeatureTab === 'care_circle' && (
+                <CareCircleView
+                  recordId={selectedRecord.id}
+                  motherName={selectedRecord.mother.name}
+                />
+              )}
+
+              {activeFeatureTab === 'completion_report' && (
+                <CompletionReportView
+                  record={selectedRecord}
+                  careDay={careDay?.currentDay || 1}
+                />
+              )}
             </div>
           </div>
         </div>

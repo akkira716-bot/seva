@@ -80,3 +80,168 @@ export function computeCareDay(birthDateStr: string, totalDays: number = 42): Ca
     progressPercent
   };
 }
+
+// -------------------------------------------------------------
+// NEW FEATURE 1: MaatruAI Personalized Daily Guidance
+// -------------------------------------------------------------
+export interface MaatruAIGuidance {
+  dayNumber: number;
+  headline: string;
+  maternalBodyFocus: string;
+  infantMilestone: string;
+  nutritionHydrationTip: string;
+  emotionalWellbeingTip: string;
+  cautionFlag: string;
+  disclaimer: string;
+}
+
+// -------------------------------------------------------------
+// NEW FEATURE 2: Family Care Mode (Caregiver Tasks)
+// -------------------------------------------------------------
+export type CaregiverRole = 'Partner' | 'Grandmother' | 'Aunt / Sister' | 'Elder / Relative' | 'Community Helper';
+export type TaskPriority = 'routine' | 'comfort' | 'urgent';
+export type TaskCategory = 'nutrition' | 'baby_care' | 'rest' | 'errands' | 'medication';
+
+export interface FamilyCareTask {
+  id: string;
+  recordId: string;
+  title: string;
+  description?: string;
+  assignedRole: CaregiverRole;
+  priority: TaskPriority;
+  category: TaskCategory;
+  isCompleted: boolean;
+  dueDate: string;
+  completedAt?: string;
+  completedBy?: string;
+}
+
+// -------------------------------------------------------------
+// NEW FEATURE 3: Digital Discharge Plan
+// -------------------------------------------------------------
+export interface DigitalDischargePlan {
+  id: string;
+  recordId: string;
+  hospitalName: string;
+  dischargeDate: string;
+  attendingPhysician: string;
+  deliveryType: 'vaginal' | 'cesarean';
+  woundCare: string;
+  activityRestrictions: string;
+  babyFeedingPlan: string;
+  medicationScheduleNote: string; // Strictly informational adherence logging
+  emergencyReturnTriggers: string[];
+  isVerifiedByClinician: boolean;
+  verifiedAt?: string;
+  clinicianNotes?: string;
+  attachmentName?: string;
+}
+
+// -------------------------------------------------------------
+// NEW FEATURE 4: Recovery Journal (Daily Log)
+// -------------------------------------------------------------
+export type BleedingLevel = 'scant' | 'light' | 'moderate' | 'heavy' | 'abnormal_clots';
+export type MoodState = 'peaceful' | 'energetic' | 'tired' | 'anxious' | 'weepy_overwhelmed';
+
+export interface RecoveryJournalEntry {
+  id: string;
+  recordId: string;
+  date: string;
+  careDay: number;
+  painScore: number; // 0 to 10 scale
+  painLocations: string[]; // e.g. ["perineum", "lower_back", "breasts", "incision"]
+  bleedingLevel: BleedingLevel;
+  mood: MoodState;
+  sleepHours: number;
+  temperatureF?: number;
+  notes?: string;
+  redFlagsDetected: string[];
+  createdAt: string;
+}
+
+// -------------------------------------------------------------
+// NEW FEATURE 5: Doctor Recovery Summary
+// -------------------------------------------------------------
+export interface DoctorRecoverySummary {
+  id: string;
+  recordId: string;
+  generatedDate: string;
+  currentDay: number;
+  vitalTrendsText: string;
+  bleedingTrendSummary: string;
+  painTrendSummary: string;
+  moodPatternSummary: string;
+  questionsForDoctor: string[];
+  customMotherNotes: string;
+  doctorReviewNotes?: string;
+  isReviewedByDoctor: boolean;
+}
+
+// -------------------------------------------------------------
+// NEW FEATURE 6: Family Explainer (Simplified Medical Instructions)
+// -------------------------------------------------------------
+export interface FamilyExplainerItem {
+  id: string;
+  medicalTerm: string;
+  category: 'maternal' | 'neonatal' | 'warning' | 'medication';
+  plainLanguageMeaning: string;
+  whatFamilyShouldDo: string;
+  whatNOTToDo: string;
+  dangerSignsToCallDoctor: string;
+}
+
+// -------------------------------------------------------------
+// NEW FEATURE 7: Offline Mode Cache State
+// -------------------------------------------------------------
+export interface OfflineEmergencyCard {
+  motherName: string;
+  rchId: string;
+  babyName: string;
+  babyDob: string;
+  deliveryType: string;
+  bloodGroup?: string;
+  emergencyContacts: { name: string; relation: string; phone: string }[];
+  hospitalName: string;
+  ambulanceHelpline: string;
+  criticalAllergies: string;
+  lastSyncedTimestamp: string;
+}
+
+// -------------------------------------------------------------
+// NEW FEATURE 8: Care Circle (Consent-Based Access & Permissions)
+// -------------------------------------------------------------
+export type CareCircleAccessLevel = 'viewer' | 'helper' | 'full';
+
+export interface CareCircleMember {
+  id: string;
+  recordId: string;
+  name: string;
+  relationship: string;
+  phone: string;
+  accessLevel: CareCircleAccessLevel;
+  status: 'active' | 'revoked';
+  invitedAt: string;
+  revokedAt?: string;
+  notificationsEnabled: boolean;
+}
+
+// -------------------------------------------------------------
+// NEW FEATURE 9: 42-Day Completion Report
+// -------------------------------------------------------------
+export interface CompletionReport42 {
+  id: string;
+  recordId: string;
+  completedDate: string;
+  overallOutcome: 'milestones_achieved' | 'extended_monitoring_advised';
+  totalJournalEntries: number;
+  averagePainResolved: boolean;
+  lochiaNormalResolution: boolean;
+  moodStatusResolved: boolean;
+  infantWeightGainKg: number;
+  vaccinesCompletedList: string[];
+  upcomingChildhoodVaccinesList: string[];
+  ashaVisitMilestonesCompleted: number;
+  attendingHealthWorkerName: string;
+  certificateId: string;
+  clinicianSignOffDate?: string;
+}
