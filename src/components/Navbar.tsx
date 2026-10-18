@@ -105,9 +105,10 @@ export default function Navbar() {
               </button>
 
               {langDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-40 rounded-2xl bg-white border border-slate-200 shadow-xl py-1 z-50">
-                  <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100">
-                    {t('nav_switch_language')}
+                <div className="absolute right-0 mt-2 w-52 max-h-80 overflow-y-auto rounded-2xl bg-white border border-slate-200 shadow-xl py-1 z-50">
+                  <div className="sticky top-0 bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 flex items-center justify-between">
+                    <span>{t('nav_switch_language')}</span>
+                    <span className="text-[9px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded-full">{supportedLanguages.length}</span>
                   </div>
                   {supportedLanguages.map((lang) => (
                     <button
@@ -146,7 +147,8 @@ export default function Navbar() {
             {/* Quick language toggle for mobile */}
             <button
               onClick={() => {
-                const nextLang = language === 'en' ? 'hi' : language === 'hi' ? 'es' : 'en';
+                const currentIndex = supportedLanguages.findIndex(l => l.code === language);
+                const nextLang = supportedLanguages[(currentIndex + 1) % supportedLanguages.length].code;
                 setLanguage(nextLang);
               }}
               className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-xs font-bold text-slate-700 flex items-center gap-1"
@@ -170,24 +172,28 @@ export default function Navbar() {
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
         <div className="xl:hidden border-b border-slate-200 bg-white px-4 pt-2 pb-4 space-y-2 shadow-lg">
-          {/* Mobile Language Pill Strip */}
-          <div className="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-200 text-xs">
-            <span className="font-bold text-slate-600 flex items-center gap-1">
-              <Globe className="w-3.5 h-3.5 text-rose-600" />
-              {t('nav_switch_language')}:
-            </span>
-            <div className="flex gap-1">
+          {/* Mobile Language Grid */}
+          <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-2">
+            <div className="flex items-center justify-between font-bold text-slate-700">
+              <span className="flex items-center gap-1.5">
+                <Globe className="w-3.5 h-3.5 text-rose-600" />
+                {t('nav_switch_language')}:
+              </span>
+              <span className="text-[10px] text-slate-400 font-semibold">{supportedLanguages.length} Languages</span>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 max-h-48 overflow-y-auto pr-0.5">
               {supportedLanguages.map((l) => (
                 <button
                   key={l.code}
                   onClick={() => handleLanguageChange(l.code)}
-                  className={`px-2 py-1 rounded-lg text-xs font-bold transition ${
+                  className={`px-2 py-1.5 rounded-lg text-xs font-medium flex items-center justify-between transition ${
                     language === l.code
-                      ? 'bg-rose-600 text-white'
-                      : 'bg-white border border-slate-200 text-slate-700'
+                      ? 'bg-rose-600 text-white font-bold shadow-sm'
+                      : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
                   }`}
                 >
-                  {l.flag} {l.nativeName}
+                  <span className="truncate">{l.flag} {l.nativeName}</span>
+                  {language === l.code && <span className="w-1.5 h-1.5 rounded-full bg-white ml-1 shrink-0" />}
                 </button>
               ))}
             </div>
