@@ -24,9 +24,11 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   // Load language from localStorage on client-side mount
   useEffect(() => {
     try {
-      const savedLang = localStorage.getItem('seva_lang') as SupportedLanguage;
+      const savedLang = (localStorage.getItem('maatrusetu_lang') || localStorage.getItem('seva_lang')) as SupportedLanguage;
       if (savedLang && SUPPORTED_LANGUAGES.some(l => l.code === savedLang)) {
         setLanguageState(savedLang);
+        document.documentElement.lang = savedLang;
+        document.documentElement.dir = savedLang === 'ur' ? 'rtl' : 'ltr';
       }
     } catch {
       // LocalStorage not available or restricted
@@ -36,8 +38,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const setLanguage = (newLang: SupportedLanguage) => {
     setLanguageState(newLang);
     try {
+      localStorage.setItem('maatrusetu_lang', newLang);
       localStorage.setItem('seva_lang', newLang);
       document.documentElement.lang = newLang;
+      document.documentElement.dir = newLang === 'ur' ? 'rtl' : 'ltr';
     } catch {
       // Ignore storage errors
     }

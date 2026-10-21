@@ -20,6 +20,13 @@ interface PageProps {
   };
 }
 
+export function generateStaticParams() {
+  const articles = db.getArticles();
+  return articles.map((article) => ({
+    slug: article.slug,
+  }));
+}
+
 export default function ArticleDetailPage({ params }: PageProps) {
   const article = db.getArticleBySlug(params.slug);
 
