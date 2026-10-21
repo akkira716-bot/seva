@@ -3,12 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MaatruSetu | Live Demo & Platform Portal (SEVA Continuum)</title>
-  <meta name="description" content="Official Live Demo of MaatruSetu: Unified 42-Day Postnatal Continuum, ASHA Community Health Worker Portal, Clinical Governance Admin & 26 Integrated Features.">
+  <title>MaatruSetu | Comprehensive Mother & Newborn Care Platform (SEVA)</title>
+  <meta name="description" content="Official Live Web App for MaatruSetu: Unified 42-Day Postnatal Care Continuum, ASHA Community Health Worker Portal, Clinical Governance, and 26 Integrated Features.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React 18 & ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <!-- Babel Standalone for JSX -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -16,376 +22,1437 @@
           fontFamily: {
             sans: ['"Plus Jakarta Sans"', 'sans-serif'],
             mono: ['"JetBrains Mono"', 'monospace'],
-          },
-          colors: {
-            brand: {
-              50: '#fff1f2',
-              100: '#ffe4e6',
-              500: '#f43f5e',
-              600: '#e11d48',
-              700: '#be123c',
-            },
-            tealbrand: {
-              500: '#0d9488',
-              600: '#0f766e',
-            }
           }
         }
       }
     }
   </script>
   <style>
-    .glow-rose { box-shadow: 0 0 40px -10px rgba(244, 63, 94, 0.3); }
-    .glow-teal { box-shadow: 0 0 40px -10px rgba(13, 148, 136, 0.3); }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    @media print {
+      .no-print { display: none !important; }
+      .print-only { display: block !important; }
+    }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen font-sans selection:bg-rose-500 selection:text-white flex flex-col">
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col selection:bg-rose-100 selection:text-rose-900">
+  <div id="root"></div>
 
-  <!-- Top Announcement Bar -->
-  <aside aria-label="Live Demo Status" class="bg-gradient-to-r from-rose-900/60 via-slate-900 to-teal-900/60 border-b border-slate-800 text-xs py-2 px-4 text-center">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-      <div class="flex items-center gap-2 mx-auto sm:mx-0">
-        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-        <span class="font-bold text-emerald-400">LIVE SYSTEM ACTIVE:</span>
-        <span class="text-slate-300">All 26 Features &amp; 8 Portals Operational</span>
-      </div>
-      <div class="flex items-center gap-3 mx-auto sm:mx-0 text-slate-400">
-        <span>GitHub Pages Official Deployment</span>
-        <span>•</span>
-        <a href="https://github.com/akkira716-bot/seva" target="_blank" rel="noopener noreferrer" class="text-rose-400 hover:text-rose-300 font-semibold underline">
-          View Repository →
-        </a>
-      </div>
-    </div>
-  </aside>
+  <!-- React Application Source -->
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
 
-  <!-- Navigation Header -->
-  <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-500 to-teal-500 flex items-center justify-center text-white font-extrabold shadow-lg shadow-rose-500/20">
-          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-          </svg>
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="font-extrabold text-lg text-white tracking-tight">MaatruSetu</span>
-            <span class="text-[10px] font-bold uppercase tracking-wider bg-teal-500/20 text-teal-300 px-2 py-0.5 rounded border border-teal-500/30">SEVA CONTINUUM</span>
-          </div>
-          <p class="text-[11px] text-slate-400 hidden sm:block">GitHub Live Demo &amp; Production Gateway</p>
-        </div>
-      </div>
+    // ---------------- SEED DATA & CONSTANTS ----------------
+    const INITIAL_RECORDS = [
+      {
+        id: 'ms-rec-001',
+        mother: { name: 'Anita Sharma', age: 26, phone: '+91 98765 43210', rchId: 'RCH-2026-7841' },
+        newborn: { name: 'Baby Aarav', sex: 'male', birthDate: '2026-10-13', birthWeightKg: 3.10, gestationalAgeWeeks: 39 },
+        healthStatus: 'stable',
+        healthStatusNote: 'Mother recovering well following normal delivery. Infant latching vigorously, yellow seedy stool, clean umbilicus.',
+        nextFollowUp: { date: '2026-10-20', type: 'Day 7-10 Postnatal Home Visit - ASHA/ANM', providerOrWorker: 'ASHA Worker Geeta Bai' },
+        nextVaccination: { name: 'OPV-1 + Pentavalent-1 + Rotavirus-1', dueDate: '2026-11-24', status: 'pending' }
+      },
+      {
+        id: 'ms-rec-002',
+        mother: { name: 'Priya Patel', age: 29, phone: '+91 98111 22334', rchId: 'RCH-2026-9022' },
+        newborn: { name: 'Baby Diya', sex: 'female', birthDate: '2026-10-19', birthWeightKg: 2.85, gestationalAgeWeeks: 38 },
+        healthStatus: 'attention_needed',
+        healthStatusNote: 'Cesarean section incision healing. Elevated blood pressure (138/88 mmHg). Scheduled for follow-up blood pressure check.',
+        nextFollowUp: { date: '2026-10-22', type: 'Day 3 BP Check & Wound Inspection', providerOrWorker: 'Dr. Sarah Lin (PHC Medical Officer)' },
+        nextVaccination: { name: 'BCG + OPV-0 + HepB Birth Dose', dueDate: '2026-10-20', status: 'completed' }
+      },
+      {
+        id: 'ms-rec-003',
+        mother: { name: 'Sunita Meena', age: 23, phone: '+91 97555 88990', rchId: 'RCH-2026-3118' },
+        newborn: { name: 'Baby Aryan', sex: 'male', birthDate: '2026-09-30', birthWeightKg: 3.25, gestationalAgeWeeks: 40 },
+        healthStatus: 'stable',
+        healthStatusNote: 'Day 21 check completed. Exclusive breastfeeding established. Gained 420g since birth.',
+        nextFollowUp: { date: '2026-10-28', type: 'Day 28 Home Visit - ASHA/ANM', providerOrWorker: 'ASHA Worker Geeta Bai' },
+        nextVaccination: { name: 'OPV-1 + Pentavalent-1 + Rotavirus-1', dueDate: '2026-11-11', status: 'pending' }
+      }
+    ];
 
-      <div class="flex items-center gap-3">
-        <a href="https://b5cbaf97a98b32.lhr.life/maatrusetu" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-xl bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white text-xs font-bold shadow-md shadow-rose-900/40 transition flex items-center gap-1.5">
-          <span>Launch Full-Screen App</span>
-          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-        </a>
-        <a href="https://github.com/akkira716-bot/seva" target="_blank" rel="noopener noreferrer" class="p-2 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-300 transition" title="GitHub Repository">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-        </a>
-      </div>
-    </div>
-  </header>
+    const ROLE_PRESETS = [
+      { id: 'user-demo-1', name: 'Anita Sharma', role: 'mother', badge: 'Mother / Parent', title: 'Postnatal Mother (Day 8 of 42)', color: 'bg-rose-500' },
+      { id: 'asha-demo-1', name: 'Geeta Bai', role: 'asha', badge: 'ASHA Health Worker', title: 'Senior Community Supervisor (RCH Sector 4)', color: 'bg-emerald-600' },
+      { id: 'reviewer-demo-1', name: 'Dr. Sarah Lin, MD', role: 'doctor', badge: 'Doctor / Reviewer', title: 'Consulting Obstetrician & Clinical Reviewer', color: 'bg-sky-600' },
+      { id: 'admin-demo-1', name: 'System Admin', role: 'admin', badge: 'System Admin', title: 'Full Governance & FHIR Administrator', color: 'bg-purple-600' }
+    ];
 
-  <!-- Hero Section -->
-  <section class="relative pt-12 pb-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full text-center space-y-6">
-    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs text-rose-300 font-semibold shadow-inner">
-      <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-      <span>Unified GitHub Live Showcase • All 26 Features Active</span>
-    </div>
+    const SUPPORTED_LANGS = [
+      { code: 'en', flag: '🇬🇧', name: 'English' },
+      { code: 'hi', flag: '🇮🇳', name: 'हिंदी (Hindi)' },
+      { code: 'te', flag: '🇮🇳', name: 'తెలుగు (Telugu)' },
+      { code: 'bn', flag: '🇮🇳', name: 'বাংলা (Bengali)' },
+      { code: 'mr', flag: '🇮🇳', name: 'मराठी (Marathi)' },
+      { code: 'ta', flag: '🇮🇳', name: 'தமிழ் (Tamil)' },
+      { code: 'gu', flag: '🇮🇳', name: 'ગુજરાતી (Gujarati)' },
+      { code: 'ur', flag: '🇵🇰', name: 'اردو (Urdu)' },
+      { code: 'kn', flag: '🇮🇳', name: 'ಕನ್ನಡ (Kannada)' },
+      { code: 'or', flag: '🇮🇳', name: 'ଓଡ଼ିଆ (Odia)' },
+      { code: 'ml', flag: '🇮🇳', name: 'മലയാളം (Malayalam)' },
+      { code: 'es', flag: '🇪🇸', name: 'Español (Spanish)' }
+    ];
 
-    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight">
-      Sustained Maternal &amp; Newborn Care <br>
-      <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-pink-400 to-teal-300">
-        42-Day Continuum of Care
-      </span>
-    </h1>
-
-    <p class="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
-      Welcome to the verified GitHub live deployment of MaatruSetu. Explore real-time postpartum recovery, ASHA field supervisor tools, clinical discharge verification, and WHO-compliant privacy governance.
-    </p>
-
-    <!-- Quick Role Switcher Buttons for Demo Viewers -->
-    <div class="pt-4 flex flex-wrap items-center justify-center gap-2 max-w-2xl mx-auto">
-      <span class="text-xs font-bold text-slate-500 uppercase mr-1">Switch Persona:</span>
-      <button onclick="switchFrame('https://b5cbaf97a98b32.lhr.life/maatrusetu')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40 hover:bg-rose-500/30 transition">
-        🤱 Mother (Anita Sharma)
-      </button>
-      <button onclick="switchFrame('https://b5cbaf97a98b32.lhr.life/asha')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30 transition">
-        👩‍⚕️ ASHA Worker (Geeta Bai)
-      </button>
-      <button onclick="switchFrame('https://b5cbaf97a98b32.lhr.life/admin')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-sky-500/20 text-sky-300 border border-sky-500/40 hover:bg-sky-500/30 transition">
-        🩺 Doctor (Dr. Sarah Lin)
-      </button>
-      <button onclick="switchFrame('https://b5cbaf97a98b32.lhr.life/admin')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 hover:bg-purple-500/30 transition">
-        🔒 System Admin
-      </button>
-    </div>
-  </section>
-
-  <!-- Interactive Live App Window -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-16 space-y-12">
-    <section aria-label="Interactive Live Application Preview" class="rounded-3xl border border-slate-800 bg-slate-900/80 shadow-2xl overflow-hidden glow-rose">
-      <!-- Browser Mockup Header -->
-      <div class="px-4 py-3 bg-slate-900 border-b border-slate-800 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
-          <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
-          <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
-          <span class="text-xs font-mono text-slate-500 ml-2 hidden sm:inline">https://b5cbaf97a98b32.lhr.life</span>
-        </div>
-
-        <div class="flex items-center gap-2 text-xs">
-          <button id="refreshBtn" onclick="reloadFrame()" class="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition" title="Refresh Live App">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-          </button>
-          <a id="currentDirectLink" href="https://b5cbaf97a98b32.lhr.life/maatrusetu" target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold transition flex items-center gap-1">
-            <span>Open in New Tab</span>
-            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-          </a>
-        </div>
-      </div>
-
-      <!-- Live App Iframe -->
-      <div class="relative w-full h-[780px] bg-white">
-        <iframe 
-          id="appIframe"
-          src="https://b5cbaf97a98b32.lhr.life/maatrusetu" 
-          title="MaatruSetu Live Application"
-          class="w-full h-full border-0"
-          loading="lazy"
-          allow="geolocation; microphone; camera; clipboard-write"
-        ></iframe>
-      </div>
-    </section>
-
-    <!-- 8 Direct Launch Cards Grid -->
-    <section aria-labelledby="portals-heading" class="space-y-6">
-      <div class="text-center space-y-1">
-        <h2 id="portals-heading" class="text-2xl font-extrabold text-white">Direct Launch Portals</h2>
-        <p class="text-xs text-slate-400">Click any portal below to open directly in full-screen</p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <!-- 1 -->
-        <a href="https://b5cbaf97a98b32.lhr.life/maatrusetu" target="_blank" rel="noopener noreferrer" class="p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-rose-500/50 hover:bg-slate-800/80 transition group block space-y-2">
-          <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
-            🤱
-          </div>
-          <h3 class="font-bold text-sm text-white group-hover:text-rose-400 transition">MaatruSetu 42-Day</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">Full postnatal continuum, MaatruAI daily guidance, recovery journal, &amp; 9 clinical tools.</p>
-        </a>
-
-        <!-- 2 -->
-        <a href="https://b5cbaf97a98b32.lhr.life/asha" target="_blank" rel="noopener noreferrer" class="p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-emerald-500/50 hover:bg-slate-800/80 transition group block space-y-2">
-          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
-            👩‍⚕️
-          </div>
-          <h3 class="font-bold text-sm text-white group-hover:text-emerald-400 transition">ASHA Field Portal</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">Community cohort triage, home visit checklist (Days 1–42), and danger-sign alerts.</p>
-        </a>
-
-        <!-- 3 -->
-        <a href="https://b5cbaf97a98b32.lhr.life/admin" target="_blank" rel="noopener noreferrer" class="p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-purple-500/50 hover:bg-slate-800/80 transition group block space-y-2">
-          <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
-            🔒
-          </div>
-          <h3 class="font-bold text-sm text-white group-hover:text-purple-400 transition">Clinical Governance</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">Evidence lifecycle review, provider verification, audit logs &amp; HL7 FHIR stubs.</p>
-        </a>
-
-        <!-- 4 -->
-        <a href="https://b5cbaf97a98b32.lhr.life/organizer" target="_blank" rel="noopener noreferrer" class="p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-teal-500/50 hover:bg-slate-800/80 transition group block space-y-2">
-          <div class="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
-            📅
-          </div>
-          <h3 class="font-bold text-sm text-white group-hover:text-teal-400 transition">Visit Organizer</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">Appointment scheduling, reminders, doctor questions checklists &amp; private notes.</p>
-        </a>
-
-        <!-- 5 -->
-        <a href="https://b5cbaf97a98b32.lhr.life/tracker" target="_blank" rel="noopener noreferrer" class="p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-sky-500/50 hover:bg-slate-800/80 transition group block space-y-2">
-          <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
-            📊
-          </div>
-          <h3 class="font-bold text-sm text-white group-hover:text-sky-400 transition">Care &amp; Vitals Tracker</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">Feeding (breast/bottle), sleep logs, diaper counts, medication, &amp; data retention purging.</p>
-        </a>
-
-        <!-- 6 -->
-        <a href="https://b5cbaf97a98b32.lhr.life/providers" target="_blank" rel="noopener noreferrer" class="p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-amber-500/50 hover:bg-slate-800/80 transition group block space-y-2">
-          <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
-            🔍
-          </div>
-          <h3 class="font-bold text-sm text-white group-hover:text-amber-400 transition">Verified Providers</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">Obstetricians, pediatricians, certified midwives, and lactation consultants directory.</p>
-        </a>
-
-        <!-- 7 -->
-        <a href="https://b5cbaf97a98b32.lhr.life/urgent-help" target="_blank" rel="noopener noreferrer" class="p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-red-500/50 hover:bg-slate-800/80 transition group block space-y-2">
-          <div class="w-10 h-10 rounded-xl bg-red-500/10 text-red-400 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
-            🚨
-          </div>
-          <h3 class="font-bold text-sm text-white group-hover:text-red-400 transition">Urgent Red Flags</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">Maternal &amp; infant triage matrices with 1-tap emergency dialer (108, 988, 1091).</p>
-        </a>
-
-        <!-- 8 -->
-        <a href="https://b5cbaf97a98b32.lhr.life/articles" target="_blank" rel="noopener noreferrer" class="p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-indigo-500/50 hover:bg-slate-800/80 transition group block space-y-2">
-          <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
-            📚
-          </div>
-          <h3 class="font-bold text-sm text-white group-hover:text-indigo-400 transition">Clinical Library</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">Peer-reviewed maternal, postpartum, and baby guidance in 12 languages.</p>
-        </a>
-      </div>
-    </section>
-
-    <!-- 26 Features Verification Matrix -->
-    <section aria-labelledby="matrix-heading" class="rounded-3xl border border-slate-800 bg-slate-900/40 p-6 sm:p-8 space-y-6">
-      <div class="text-center space-y-2">
-        <span class="text-[11px] font-bold uppercase tracking-wider text-teal-400 bg-teal-500/10 px-3 py-1 rounded-full border border-teal-500/20">
-          Architecture &amp; Features Verification
-        </span>
-        <h2 id="matrix-heading" class="text-2xl font-extrabold text-white">All 26 Features Verified Live</h2>
-        <p class="text-xs text-slate-400 max-w-xl mx-auto">Every component is tested with zero TypeScript compile errors, responsive Tailwind layout, persistent data stores, and safe clinical boundaries.</p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs text-slate-300">
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>1. Maternal Continuum Profile:</strong> Day 1-42 tracker</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>2. Postnatal Home Check-ins:</strong> ASHA visit schedule</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>3. Registration Form:</strong> Mother &amp; newborn onboarding</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>4. MaatruAI:</strong> Daily recovery &amp; clinical Q&amp;A</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>5. Family Care Mode:</strong> Caregiver role task assigner</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>6. Digital Discharge Plan:</strong> 4-quadrant verified instructions</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>7. Recovery Journal:</strong> 0-10 pain, lochia, temp &amp; mood</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>8. Doctor Summary:</strong> Consolidated briefing export</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>9. Family Explainer:</strong> Medical jargon translator</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>10. Offline Mode:</strong> Emergency care pass &amp; contacts</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>11. Care Circle:</strong> Revocable caregiver permissions</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>12. 42-Day Graduation:</strong> Report &amp; printable certificate</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>13. Evidence Articles:</strong> Peer-reviewed pregnancy &amp; baby</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>14. Stage Filtered Reader:</strong> Trimester-specific reading</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>15. Providers Directory:</strong> Verified OB/GYN finder</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>16. Visit Scheduler:</strong> Appointment notes &amp; reminders</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>17. Questions Vault:</strong> Stage clinical visit checklists</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>18. Daily Vitals Tracker:</strong> Feeding, diaper, sleep logs</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>19. Urgent Red Flags:</strong> Maternal &amp; neonatal triage</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>20. Emergency Quick Dial:</strong> 108, 988, 1091, 1098</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>21. ASHA Field Portal:</strong> Community cohort register</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>22. Content Lifecycle:</strong> Draft ➔ Review ➔ Publish</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>23. Provider Credentialing:</strong> License verification</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>24. HL7 FHIR R4:</strong> Patient &amp; Appointment stubs</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>25. WHO Privacy Audit:</strong> PII-sanitized logs</span>
-        </div>
-        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span>
-          <span><strong>26. Shared Auth &amp; RBAC:</strong> Role switcher &amp; GDPR erasure</span>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer class="mt-auto border-t border-slate-800 bg-slate-900/60 py-6 text-center text-xs text-slate-500">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-      <span>© 2026 MaatruSetu • Powered by SEVA Digital Health Architecture</span>
-      <div class="flex items-center gap-4 text-slate-400">
-        <a href="https://github.com/akkira716-bot/seva" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">GitHub Repo</a>
-        <span>•</span>
-        <a href="https://b5cbaf97a98b32.lhr.life/maatrusetu" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">Direct App Link</a>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    function switchFrame(url) {
-      const iframe = document.getElementById('appIframe');
-      const directLink = document.getElementById('currentDirectLink');
-      iframe.src = url;
-      directLink.href = url;
+    // Compute Care Day from birthDate
+    function computeCareDay(birthDateStr) {
+      const birth = new Date(birthDateStr);
+      const now = new Date();
+      birth.setHours(0,0,0,0);
+      now.setHours(0,0,0,0);
+      const diffMs = now.getTime() - birth.getTime();
+      const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      const currentDay = Math.max(1, diffDays + 1);
+      const totalDays = 42;
+      return {
+        currentDay: Math.min(currentDay, totalDays),
+        totalDays,
+        daysRemaining: Math.max(0, totalDays - currentDay),
+        progressPercent: Math.min(100, Math.round((currentDay / totalDays) * 100))
+      };
     }
 
-    function reloadFrame() {
-      const iframe = document.getElementById('appIframe');
-      iframe.src = iframe.src;
+    // ---------------- MAIN REACT APPLICATION ----------------
+    function App() {
+      // Global App Navigation & State
+      const [activePortal, setActivePortal] = useState('maatrusetu'); // maatrusetu | asha | admin | organizer | tracker | urgent | providers | articles
+      const [activeRole, setActiveRole] = useState('mother');
+      const [activeLang, setActiveLang] = useState('en');
+      const [records, setRecords] = useState(() => {
+        const saved = localStorage.getItem('maatrusetu_records');
+        return saved ? JSON.parse(saved) : INITIAL_RECORDS;
+      });
+      const [selectedRecordId, setSelectedRecordId] = useState('ms-rec-001');
+
+      // Sync state to localStorage
+      useEffect(() => {
+        localStorage.setItem('maatrusetu_records', JSON.stringify(records));
+      }, [records]);
+
+      const currentRecord = useMemo(() => {
+        return records.find(r => r.id === selectedRecordId) || records[0];
+      }, [records, selectedRecordId]);
+
+      const careDay = useMemo(() => {
+        return computeCareDay(currentRecord.newborn.birthDate);
+      }, [currentRecord]);
+
+      // Active Role Preset
+      const currentPreset = useMemo(() => {
+        return ROLE_PRESETS.find(p => p.role === activeRole) || ROLE_PRESETS[0];
+      }, [activeRole]);
+
+      // Modals
+      const [roleModalOpen, setRoleModalOpen] = useState(false);
+      const [langModalOpen, setLangModalOpen] = useState(false);
+      const [onboardModalOpen, setOnboardModalOpen] = useState(false);
+
+      // Onboarding state
+      const [newMotherName, setNewMotherName] = useState('');
+      const [newMotherAge, setNewMotherAge] = useState('25');
+      const [newBabyName, setNewBabyName] = useState('');
+      const [newBabySex, setNewBabySex] = useState('female');
+      const [newBirthDate, setNewBirthDate] = useState('2026-10-18');
+      const [newBirthWeight, setNewBirthWeight] = useState('3.0');
+
+      const handleAddRecord = (e) => {
+        e.preventDefault();
+        const newRec = {
+          id: `ms-rec-${Date.now()}`,
+          mother: { name: newMotherName, age: Number(newMotherAge), phone: '+91 99000 11223', rchId: `RCH-${Math.floor(1000 + Math.random() * 9000)}` },
+          newborn: { name: newBabyName, sex: newBabySex, birthDate: newBirthDate, birthWeightKg: Number(newBirthWeight), gestationalAgeWeeks: 39 },
+          healthStatus: 'stable',
+          healthStatusNote: 'Newly registered mother and infant onboarding into 42-day continuum.',
+          nextFollowUp: { date: '2026-10-25', type: 'Day 7 Postnatal Home Visit - ASHA', providerOrWorker: 'ASHA Worker Geeta Bai' },
+          nextVaccination: { name: 'BCG + OPV-0 + HepB Birth Dose', dueDate: newBirthDate, status: 'pending' }
+        };
+        const updated = [newRec, ...records];
+        setRecords(updated);
+        setSelectedRecordId(newRec.id);
+        setOnboardModalOpen(false);
+        setNewMotherName('');
+        setNewBabyName('');
+      };
+
+      return (
+        <div className="flex flex-col min-h-screen">
+          {/* Top Emergency Ticker */}
+          <div className="bg-rose-600 text-white text-xs py-1.5 px-4 no-print flex items-center justify-between">
+            <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
+              <span className="font-semibold flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                <strong>URGENT MEDICAL TRIAGE:</strong> Experiencing fever &ge;100.4&deg;F, heavy bleeding &gt;1 pad/hr, or infant lethargy?
+              </span>
+              <div className="flex items-center gap-3">
+                <a href="tel:108" className="bg-white text-rose-700 px-2 py-0.5 rounded font-bold hover:bg-rose-50 transition">Call 108 Ambulance</a>
+                <button onClick={() => setActivePortal('urgent')} className="underline font-bold hover:text-rose-100">Red Flag Matrix →</button>
+              </div>
+            </div>
+          </div>
+
+          {/* Navigation Bar */}
+          <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-rose-100 shadow-sm no-print">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+              {/* Brand */}
+              <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActivePortal('maatrusetu')}>
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-500 via-rose-600 to-teal-500 flex items-center justify-center text-white shadow-md font-black text-xl">
+                  M
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-extrabold text-lg text-slate-800">MaatruSetu</span>
+                    <span className="text-[10px] font-bold uppercase tracking-wider bg-teal-100 text-teal-800 px-1.5 py-0.5 rounded">SEVA CONTINUUM</span>
+                  </div>
+                  <p className="text-[10px] text-slate-500 font-medium hidden sm:block">Maternal, Newborn & Community Continuum</p>
+                </div>
+              </div>
+
+              {/* Portal Links */}
+              <nav className="hidden lg:flex items-center space-x-1">
+                {[
+                  { id: 'maatrusetu', label: 'MaatruSetu 42-Day', icon: '🤱', badge: 'Care' },
+                  { id: 'asha', label: 'ASHA Field', icon: '👩‍⚕️', badge: 'Field' },
+                  { id: 'organizer', label: 'Organizer', icon: '📅' },
+                  { id: 'tracker', label: 'Vitals Tracker', icon: '📊' },
+                  { id: 'urgent', label: 'Urgent Red Flags', icon: '🚨', badge: 'Urgent' },
+                  { id: 'providers', label: 'Providers', icon: '🔍' },
+                  { id: 'articles', label: 'Guidance', icon: '📚' },
+                  { id: 'admin', label: 'Governance', icon: '🔒' }
+                ].map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => setActivePortal(item.id)}
+                    className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-bold transition ${
+                      activePortal === item.id ? 'bg-rose-50 text-rose-700 shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                    }`}
+                  >
+                    <span>{item.icon}</span>
+                    <span>{item.label}</span>
+                    {item.badge && (
+                      <span className={`text-[8px] font-black uppercase px-1.5 py-0.2 rounded-full ${
+                        item.badge === 'Urgent' ? 'bg-rose-100 text-rose-700' : 'bg-teal-100 text-teal-700'
+                      }`}>{item.badge}</span>
+                    )}
+                  </button>
+                ))}
+              </nav>
+
+              {/* Action Buttons: Role Switcher & Languages */}
+              <div className="flex items-center gap-2">
+                {/* Role Switcher */}
+                <button
+                  onClick={() => setRoleModalOpen(true)}
+                  className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-bold transition shadow-xs"
+                >
+                  <div className={`w-5 h-5 rounded-md ${currentPreset.color} text-white flex items-center justify-center text-[10px]`}>
+                    {currentPreset.name.charAt(0)}
+                  </div>
+                  <span className="hidden sm:inline">{currentPreset.name}</span>
+                  <span className="text-[10px] text-teal-700 uppercase font-black">({currentPreset.badge})</span>
+                </button>
+
+                {/* Language Switcher */}
+                <button
+                  onClick={() => setLangModalOpen(true)}
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold transition shadow-xs"
+                >
+                  <span>🌐</span>
+                  <span className="uppercase text-[11px] font-mono">{activeLang}</span>
+                </button>
+              </div>
+            </div>
+          </header>
+
+          {/* Main Content Area */}
+          <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
+            {activePortal === 'maatrusetu' && (
+              <MaatruSetuDashboard
+                records={records}
+                selectedRecord={currentRecord}
+                careDay={careDay}
+                onSelectRecordId={setSelectedRecordId}
+                onOpenOnboarding={() => setOnboardModalOpen(true)}
+              />
+            )}
+            {activePortal === 'asha' && (
+              <AshaPortalView
+                records={records}
+                onUpdateRecords={setRecords}
+                onSelectRecordId={(id) => { setSelectedRecordId(id); setActivePortal('maatrusetu'); }}
+              />
+            )}
+            {activePortal === 'admin' && (
+              <AdminGovernanceView
+                activeRole={activeRole}
+                onChangeRole={setActiveRole}
+                records={records}
+              />
+            )}
+            {activePortal === 'organizer' && <VisitOrganizerView />}
+            {activePortal === 'tracker' && <VitalsTrackerView />}
+            {activePortal === 'urgent' && <UrgentHelpView />}
+            {activePortal === 'providers' && <ProvidersDirectoryView />}
+            {activePortal === 'articles' && <GuidanceArticlesView />}
+          </main>
+
+          {/* Role Modal */}
+          {roleModalOpen && (
+            <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+                <div className="flex items-center justify-between border-b pb-3">
+                  <h3 className="font-extrabold text-base text-slate-900">Switch Healthcare Persona & Access Tier</h3>
+                  <button onClick={() => setRoleModalOpen(false)} className="text-slate-400 font-bold text-lg">✕</button>
+                </div>
+                <div className="space-y-2">
+                  {ROLE_PRESETS.map((p) => (
+                    <button
+                      key={p.id}
+                      onClick={() => { setActiveRole(p.role); setRoleModalOpen(false); }}
+                      className={`w-full p-3 rounded-2xl border text-left transition flex items-center gap-3 ${
+                        activeRole === p.role ? 'border-rose-500 bg-rose-50/70 ring-2 ring-rose-500/20' : 'border-slate-200 hover:bg-slate-50'
+                      }`}
+                    >
+                      <div className={`w-9 h-9 rounded-xl ${p.color} text-white font-extrabold flex items-center justify-center`}>
+                        {p.name.charAt(0)}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <span className="font-extrabold text-xs text-slate-800">{p.name}</span>
+                          <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">{p.badge}</span>
+                        </div>
+                        <p className="text-[11px] text-slate-500 truncate">{p.title}</p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Language Modal */}
+          {langModalOpen && (
+            <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="bg-white rounded-3xl max-w-sm w-full p-6 space-y-4 shadow-2xl">
+                <div className="flex items-center justify-between border-b pb-3">
+                  <h3 className="font-extrabold text-base text-slate-900">Select Application Language</h3>
+                  <button onClick={() => setLangModalOpen(false)} className="text-slate-400 font-bold text-lg">✕</button>
+                </div>
+                <div className="grid grid-cols-2 gap-2 max-h-72 overflow-y-auto">
+                  {SUPPORTED_LANGS.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => { setActiveLang(lang.code); setLangModalOpen(false); }}
+                      className={`p-2.5 rounded-xl border text-xs font-bold flex items-center justify-between ${
+                        activeLang === lang.code ? 'border-rose-500 bg-rose-50 text-rose-700' : 'border-slate-200 hover:bg-slate-50 text-slate-700'
+                      }`}
+                    >
+                      <span>{lang.flag} {lang.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Onboarding Registration Modal */}
+          {onboardModalOpen && (
+            <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="bg-white rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+                <div className="flex items-center justify-between border-b pb-3">
+                  <h3 className="font-extrabold text-lg text-slate-900">Register Mother &amp; Newborn</h3>
+                  <button onClick={() => setOnboardModalOpen(false)} className="text-slate-400 font-bold text-lg">✕</button>
+                </div>
+                <form onSubmit={handleAddRecord} className="space-y-3 text-xs">
+                  <div>
+                    <label className="font-bold text-slate-700 block mb-1">Mother Full Name</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Kavita Varma"
+                      value={newMotherName}
+                      onChange={e => setNewMotherName(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-rose-500"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="font-bold text-slate-700 block mb-1">Mother Age</label>
+                      <input
+                        type="number"
+                        required
+                        value={newMotherAge}
+                        onChange={e => setNewMotherAge(e.target.value)}
+                        className="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-rose-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="font-bold text-slate-700 block mb-1">Newborn Sex</label>
+                      <select
+                        value={newBabySex}
+                        onChange={e => setNewBabySex(e.target.value)}
+                        className="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-rose-500"
+                      >
+                        <option value="female">Female</option>
+                        <option value="male">Male</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="font-bold text-slate-700 block mb-1">Newborn Name</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Baby Ishaan"
+                      value={newBabyName}
+                      onChange={e => setNewBabyName(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-rose-500"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="font-bold text-slate-700 block mb-1">Birth Date</label>
+                      <input
+                        type="date"
+                        required
+                        value={newBirthDate}
+                        onChange={e => setNewBirthDate(e.target.value)}
+                        className="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-rose-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="font-bold text-slate-700 block mb-1">Birth Weight (kg)</label>
+                      <input
+                        type="number"
+                        step="0.05"
+                        required
+                        value={newBirthWeight}
+                        onChange={e => setNewBirthWeight(e.target.value)}
+                        className="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-rose-500"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex justify-end gap-2 pt-3 border-t">
+                    <button type="button" onClick={() => setOnboardModalOpen(false)} className="px-4 py-2 rounded-xl border text-slate-600 font-bold hover:bg-slate-50">Cancel</button>
+                    <button type="submit" className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold shadow-md">Register &amp; Start 42-Day Care</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* Footer */}
+          <footer className="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-auto no-print">
+            <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div>
+                <span className="font-extrabold text-white text-sm">MaatruSetu</span> • Powered by SEVA Digital Health Architecture
+                <p className="text-[11px] text-slate-500 mt-0.5">Compliant with WHO Digital Health Data Governance &amp; MoHFW Postnatal Guidelines</p>
+              </div>
+              <div className="flex items-center gap-4 text-slate-400">
+                <a href="https://github.com/akkira716-bot/seva" target="_blank" className="hover:text-white transition">GitHub Repo</a>
+                <span>•</span>
+                <span className="text-emerald-400 font-bold">● Standalone GitHub Pages Engine (Zero Tunnels Required)</span>
+              </div>
+            </div>
+          </footer>
+        </div>
+      );
     }
+
+    // ---------------- SUBVIEW: MAATRUSETU DASHBOARD ----------------
+    function MaatruSetuDashboard({ records, selectedRecord, careDay, onSelectRecordId, onOpenOnboarding }) {
+      const [clinicalTab, setClinicalTab] = useState('guidance'); // guidance | family_care | discharge | journal | summary | explainer | offline | circle | report
+
+      return (
+        <div className="space-y-6">
+          {/* Top Patient Selector & Onboarding Bar */}
+          <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mr-1">Mother Profile:</span>
+              {records.map((r) => (
+                <button
+                  key={r.id}
+                  onClick={() => onSelectRecordId(r.id)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition flex items-center gap-1.5 ${
+                    selectedRecord.id === r.id ? 'bg-rose-600 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  }`}
+                >
+                  <span>{r.mother.name}</span>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${selectedRecord.id === r.id ? 'bg-rose-700' : 'bg-slate-200'}`}>
+                    Day {computeCareDay(r.newborn.birthDate).currentDay}
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={onOpenOnboarding}
+              className="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold shadow-md transition flex items-center gap-1.5 shrink-0"
+            >
+              <span>+ Register Mother &amp; Newborn</span>
+            </button>
+          </div>
+
+          {/* Continuum Profile Header Card */}
+          <div className="bg-gradient-to-r from-rose-500 via-rose-600 to-teal-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+            <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Mother Details */}
+              <div className="space-y-1">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded-full">Mother Profile</span>
+                <h1 className="text-2xl font-black">{selectedRecord.mother.name}</h1>
+                <p className="text-xs text-rose-100">Age: {selectedRecord.mother.age} yrs • RCH ID: {selectedRecord.mother.rchId}</p>
+                <p className="text-xs text-rose-100">Phone: {selectedRecord.mother.phone}</p>
+                <div className="pt-2">
+                  <span className={`inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full ${
+                    selectedRecord.healthStatus === 'stable' ? 'bg-emerald-500 text-white' : 'bg-amber-400 text-slate-900'
+                  }`}>
+                    ● {selectedRecord.healthStatus === 'stable' ? 'Clinical Status: STABLE' : 'Clinical Status: ATTENTION NEEDED'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Newborn Details */}
+              <div className="space-y-1 border-t md:border-t-0 md:border-l border-white/20 pt-4 md:pt-0 md:pl-6">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded-full">Newborn Profile</span>
+                <h2 className="text-xl font-bold">{selectedRecord.newborn.name}</h2>
+                <p className="text-xs text-rose-100">Sex: {selectedRecord.newborn.sex.toUpperCase()} • Birth Weight: {selectedRecord.newborn.birthWeightKg} kg</p>
+                <p className="text-xs text-rose-100">Gestational Age: {selectedRecord.newborn.gestationalAgeWeeks} weeks</p>
+                <p className="text-xs text-rose-100">Born on: {selectedRecord.newborn.birthDate}</p>
+              </div>
+
+              {/* Day X of 42 Progress */}
+              <div className="border-t md:border-t-0 md:border-l border-white/20 pt-4 md:pt-0 md:pl-6 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-rose-100">42-Day Postnatal Continuum</span>
+                  <span className="text-xl font-black">{careDay.currentDay} / 42</span>
+                </div>
+                <div className="w-full bg-black/20 rounded-full h-3 overflow-hidden p-0.5">
+                  <div className="bg-white rounded-full h-full transition-all duration-500" style={{ width: `${careDay.progressPercent}%` }}></div>
+                </div>
+                <p className="text-[11px] text-rose-100">{careDay.daysRemaining} days remaining in immediate continuum.</p>
+                <div className="text-[11px] bg-white/10 p-2 rounded-xl mt-2">
+                  <strong>Next Follow-up:</strong> {selectedRecord.nextFollowUp.date} ({selectedRecord.nextFollowUp.type})
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 9 Clinical Tabs Strip */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-2 border-b border-slate-200">
+            {[
+              { id: 'guidance', label: '1. MaatruAI Guidance', icon: '✨' },
+              { id: 'family_care', label: '2. Family Care Mode', icon: '👨‍👩‍👦' },
+              { id: 'discharge', label: '3. Discharge Plan', icon: '📋' },
+              { id: 'journal', label: '4. Recovery Journal', icon: '📖' },
+              { id: 'summary', label: '5. Doctor Summary', icon: '🩺' },
+              { id: 'explainer', label: '6. Family Explainer', icon: '💡' },
+              { id: 'offline', label: '7. Offline Mode', icon: '📶' },
+              { id: 'circle', label: '8. Care Circle', icon: '🛡️' },
+              { id: 'report', label: '9. 42-Day Report', icon: '🎓' }
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setClinicalTab(tab.id)}
+                className={`px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition flex items-center gap-1.5 ${
+                  clinicalTab === tab.id ? 'bg-slate-900 text-white shadow-sm' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                <span>{tab.icon}</span>
+                <span>{tab.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Clinical Tab Content Renderers */}
+          {clinicalTab === 'guidance' && <MaatruAIGuidanceTab careDay={careDay} record={selectedRecord} />}
+          {clinicalTab === 'family_care' && <FamilyCareTab record={selectedRecord} />}
+          {clinicalTab === 'discharge' && <DischargePlanTab record={selectedRecord} />}
+          {clinicalTab === 'journal' && <RecoveryJournalTab record={selectedRecord} />}
+          {clinicalTab === 'summary' && <DoctorSummaryTab record={selectedRecord} careDay={careDay} />}
+          {clinicalTab === 'explainer' && <FamilyExplainerTab />}
+          {clinicalTab === 'offline' && <OfflineModeTab record={selectedRecord} careDay={careDay} />}
+          {clinicalTab === 'circle' && <CareCircleTab record={selectedRecord} />}
+          {clinicalTab === 'report' && <CompletionReportTab record={selectedRecord} careDay={careDay} />}
+        </div>
+      );
+    }
+
+    // --- FEATURE 1: MAATRUAI GUIDANCE TAB ---
+    function MaatruAIGuidanceTab({ careDay, record }) {
+      const [aiQuery, setAiQuery] = useState('');
+      const [aiResponse, setAiResponse] = useState('');
+
+      const handleAskAI = (q) => {
+        const query = q || aiQuery;
+        if (!query.trim()) return;
+        setAiResponse(`Analyzing Day ${careDay.currentDay} clinical guidelines...`);
+        setTimeout(() => {
+          if (query.toLowerCase().includes('latch') || query.toLowerCase().includes('breast')) {
+            setAiResponse(`Advice for Day ${careDay.currentDay}: Ensure asymmetric latch where baby takes more of lower areola. Chin should indent breast firmly. If nipples are tender, express colostrum/milk onto nipples and air dry. Seek lactation support if pain persists past initial 30 seconds of suckling.`);
+          } else if (query.toLowerCase().includes('bleed') || query.toLowerCase().includes('lochia')) {
+            setAiResponse(`Advice for Day ${careDay.currentDay}: Lochia should be transitioning from bright red (rubra) to pinkish-brown (serosa). Soaking more than 1 maxi-pad per hour or passing clots larger than a golf ball is an emergency requiring immediate triage.`);
+          } else {
+            setAiResponse(`Guidance for Day ${careDay.currentDay}: Maintain 2.5-3L water intake, continue iron/calcium supplements, rest while baby sleeps, and monitor for fever ≥100.4°F. Contact your primary doctor or ASHA worker for clinical evaluations.`);
+          }
+        }, 500);
+      };
+
+      return (
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+          <div className="flex items-center justify-between border-b pb-4">
+            <div>
+              <h3 className="text-lg font-black text-slate-900">MaatruAI: Personalized Daily Clinical Guidance</h3>
+              <p className="text-xs text-slate-500">Day {careDay.currentDay} of 42 Postnatal Care Continuum • Non-diagnostic Evidence-based Guidance</p>
+            </div>
+            <span className="text-xs font-bold px-3 py-1 rounded-full bg-teal-50 text-teal-800">Verified Protocols</span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div className="p-4 rounded-2xl bg-rose-50 border border-rose-100 space-y-2">
+              <span className="font-bold text-rose-800 uppercase text-[10px]">Recovery Milestone</span>
+              <p className="font-extrabold text-slate-800 text-sm">Uterine Involution &amp; Lochia Tapering</p>
+              <p className="text-slate-600 leading-relaxed">Uterus is now midway between pubic symphysis and navel. Mild cramping while nursing is healthy release of natural oxytocin.</p>
+            </div>
+            <div className="p-4 rounded-2xl bg-teal-50 border border-teal-100 space-y-2">
+              <span className="font-bold text-teal-800 uppercase text-[10px]">Hydration &amp; Nutrition</span>
+              <p className="font-extrabold text-slate-800 text-sm">3 Liters Hydration + Iron/Calcium</p>
+              <p className="text-slate-600 leading-relaxed">Priority intake: Moong dal, leafy greens, sesame seeds, warm fluids. Avoid excessive spice or prolonged fasting during early lactation.</p>
+            </div>
+            <div className="p-4 rounded-2xl bg-amber-50 border border-amber-100 space-y-2">
+              <span className="font-bold text-amber-800 uppercase text-[10px]">Red Flag Warning Check</span>
+              <p className="font-extrabold text-slate-800 text-sm">Fever, Incision Pain, Visual Spots</p>
+              <p className="text-slate-600 leading-relaxed">Seek immediate triage if temperature exceeds 100.4°F, headache resists medication, or severe unilateral calf pain occurs.</p>
+            </div>
+          </div>
+
+          {/* Interactive AI Query */}
+          <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+            <span className="font-bold text-xs text-slate-700 block">Ask MaatruAI Maternal Assistant:</span>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="Ask about breastfeeding latch, bleeding flow, perineal relief, or diet..."
+                value={aiQuery}
+                onChange={e => setAiQuery(e.target.value)}
+                className="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-xs outline-none focus:ring-2 focus:ring-rose-500"
+              />
+              <button
+                onClick={() => handleAskAI()}
+                className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs transition shadow-sm"
+              >
+                Ask AI
+              </button>
+            </div>
+
+            <div className="flex flex-wrap gap-1.5 pt-1">
+              {['Baby latching pain relief', 'Normal lochia bleeding Day 8', 'Perineal pain & sitz bath', 'Iron supplement tips'].map((chip, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => { setAiQuery(chip); handleAskAI(chip); }}
+                  className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-[11px] text-slate-600 hover:bg-slate-100 font-medium"
+                >
+                  {chip}
+                </button>
+              ))}
+            </div>
+
+            {aiResponse && (
+              <div className="p-3.5 rounded-xl bg-white border border-teal-200 text-xs text-slate-700 mt-2 space-y-1">
+                <span className="text-[10px] font-extrabold text-teal-700 uppercase">MaatruAI Response:</span>
+                <p className="leading-relaxed">{aiResponse}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // --- FEATURE 2: FAMILY CARE TAB ---
+    function FamilyCareTab({ record }) {
+      const [tasks, setTasks] = useState([
+        { id: 't1', title: 'Prepare Warm Iron-Rich Moong Dal Khichdi', role: 'Partner', category: 'Nutrition', priority: 'High', completed: true },
+        { id: 't2', title: 'Infant Sunning / Kangaroo Mother Care (30 mins)', role: 'Mother/MIL', category: 'Newborn', priority: 'Normal', completed: false },
+        { id: 't3', title: 'Verify Evening Calcium & Iron Supplements', role: 'Partner', category: 'Clinical', priority: 'High', completed: false },
+        { id: 't4', title: 'Protect 2-Hour Afternoon Sleep Window for Mother', role: 'Sibling', category: 'Rest', priority: 'Normal', completed: true }
+      ]);
+      const [newTaskTitle, setNewTaskTitle] = useState('');
+      const [newTaskRole, setNewTaskRole] = useState('Partner');
+
+      const toggleTask = (id) => {
+        setTasks(tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
+      };
+
+      const addTask = (e) => {
+        e.preventDefault();
+        if (!newTaskTitle.trim()) return;
+        setTasks([...tasks, {
+          id: `t-${Date.now()}`,
+          title: newTaskTitle,
+          role: newTaskRole,
+          category: 'Family Care',
+          priority: 'Normal',
+          completed: false
+        }]);
+        setNewTaskTitle('');
+      };
+
+      const completedCount = tasks.filter(t => t.completed).length;
+
+      return (
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+          <div className="flex items-center justify-between border-b pb-4">
+            <div>
+              <h3 className="text-lg font-black text-slate-900">Family Care Mode: Shared Caregiver Tasks</h3>
+              <p className="text-xs text-slate-500">Empower partners, mothers-in-law, and family to take active ownership of maternal recovery.</p>
+            </div>
+            <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-rose-50 text-rose-700">
+              {completedCount} of {tasks.length} Done ({Math.round((completedCount/tasks.length)*100)}%)
+            </span>
+          </div>
+
+          <form onSubmit={addTask} className="flex gap-2 text-xs">
+            <input
+              type="text"
+              placeholder="Assign a task (e.g. Prepare warm cumin water, clean baby clothes...)"
+              value={newTaskTitle}
+              onChange={e => setNewTaskTitle(e.target.value)}
+              className="flex-1 px-3 py-2 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-rose-500"
+            />
+            <select
+              value={newTaskRole}
+              onChange={e => setNewTaskRole(e.target.value)}
+              className="px-3 py-2 rounded-xl border border-slate-200 outline-none"
+            >
+              <option value="Partner">Partner</option>
+              <option value="Mother/MIL">Mother/MIL</option>
+              <option value="Sibling">Sibling</option>
+              <option value="ASHA Worker">ASHA</option>
+            </select>
+            <button type="submit" className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold transition shadow-sm">
+              Add Task
+            </button>
+          </form>
+
+          <div className="divide-y divide-slate-100 text-xs">
+            {tasks.map(t => (
+              <div key={t.id} className="py-3 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={t.completed}
+                    onChange={() => toggleTask(t.id)}
+                    className="w-4 h-4 rounded text-rose-600 cursor-pointer"
+                  />
+                  <div>
+                    <p className={`font-bold ${t.completed ? 'line-through text-slate-400' : 'text-slate-800'}`}>{t.title}</p>
+                    <p className="text-[10px] text-slate-400">Assigned to: <strong className="text-slate-600">{t.role}</strong> • Category: {t.category}</p>
+                  </div>
+                </div>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                  t.priority === 'High' ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-600'
+                }`}>{t.priority}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // --- FEATURE 3: DISCHARGE PLAN TAB ---
+    function DischargePlanTab({ record }) {
+      return (
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+          <div className="flex items-center justify-between border-b pb-4">
+            <div>
+              <h3 className="text-lg font-black text-slate-900">Digital Discharge Plan</h3>
+              <p className="text-xs text-slate-500">Verified clinical discharge summary from District Women’s Hospital</p>
+            </div>
+            <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800">
+              ✓ Clinician Authenticated
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <span className="font-extrabold text-slate-800 text-sm">1. Maternal Medications &amp; Dosages</span>
+              <ul className="space-y-1 text-slate-600 list-disc pl-4">
+                <li>Iron &amp; Folic Acid (100mg elemental iron) - 1 tab daily after lunch for 100 days</li>
+                <li>Calcium Carbonate (500mg) + Vit D3 - 1 tab twice daily with milk</li>
+                <li>Paracetamol 500mg - 1 tab as needed for perineal cramping (Max 3/day)</li>
+              </ul>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <span className="font-extrabold text-slate-800 text-sm">2. Incision / Perineal Wound Care</span>
+              <ul className="space-y-1 text-slate-600 list-disc pl-4">
+                <li>Keep episiotomy/cesarean area clean and dry. Pat gently with sterile cloth.</li>
+                <li>Warm sitz baths (warm saline soak) twice daily for 10 minutes.</li>
+                <li>Report redness, warmth, foul smell, or discharge immediately.</li>
+              </ul>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <span className="font-extrabold text-slate-800 text-sm">3. Activity &amp; Lifting Restrictions</span>
+              <ul className="space-y-1 text-slate-600 list-disc pl-4">
+                <li>Strict restriction: Do NOT lift items heavier than the infant (max 4 kg).</li>
+                <li>Avoid squatting on floor or climbing steep stairs repeatedly.</li>
+                <li>Pelvic rest: Abstain from sexual intercourse and tampon usage for 6 weeks.</li>
+              </ul>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 space-y-2">
+              <span className="font-extrabold text-rose-900 text-sm">4. Emergency Return Criteria</span>
+              <ul className="space-y-1 text-rose-800 list-disc pl-4 font-medium">
+                <li>Heavy vaginal bleeding soaking more than 1 maxi pad in an hour</li>
+                <li>Fever above 100.4°F with chills or abdominal pain</li>
+                <li>Infant unable to feed, cold to touch, or displaying yellow eyes/skin</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // --- FEATURE 4: RECOVERY JOURNAL TAB ---
+    function RecoveryJournalTab({ record }) {
+      const [painScore, setPainScore] = useState(3);
+      const [lochiaLevel, setLochiaLevel] = useState('moderate');
+      const [mood, setMood] = useState('good');
+      const [journalLogs, setJournalLogs] = useState([
+        { date: '2026-10-18', pain: 3, lochia: 'moderate', mood: 'Peaceful', note: 'Breastfeeding going well, mild back soreness.' },
+        { date: '2026-10-17', pain: 4, lochia: 'moderate', mood: 'Tired', note: 'Slept 4 hours in shifts, good baby latch.' }
+      ]);
+
+      const addEntry = () => {
+        setJournalLogs([{
+          date: new Date().toISOString().split('T')[0],
+          pain: painScore,
+          lochia: lochiaLevel,
+          mood: mood,
+          note: `Pain Index: ${painScore}/10, Lochia: ${lochiaLevel}, Mood: ${mood}`
+        }, ...journalLogs]);
+      };
+
+      return (
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+          <div className="flex items-center justify-between border-b pb-4">
+            <div>
+              <h3 className="text-lg font-black text-slate-900">Recovery Journal &amp; Symptom Tracker</h3>
+              <p className="text-xs text-slate-500">Record daily pain score, lochia bleeding level, and emotional well-being.</p>
+            </div>
+            <button onClick={addEntry} className="px-4 py-2 rounded-xl bg-rose-600 text-white font-bold text-xs shadow hover:bg-rose-700">
+              + Save Today’s Entry
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <label className="font-extrabold text-slate-800 block">Maternal Pain Score: {painScore}/10</label>
+              <input
+                type="range"
+                min="0"
+                max="10"
+                value={painScore}
+                onChange={e => setPainScore(Number(e.target.value))}
+                className="w-full accent-rose-600"
+              />
+              <span className="text-[10px] text-slate-500 block">0 = No Pain, 10 = Severe Incapacitating</span>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <label className="font-extrabold text-slate-800 block">Lochia Bleeding Level</label>
+              <select
+                value={lochiaLevel}
+                onChange={e => setLochiaLevel(e.target.value)}
+                className="w-full p-2 rounded-xl border border-slate-200 outline-none"
+              >
+                <option value="light">Light Spotting (Pink/White)</option>
+                <option value="moderate">Moderate Flow (Normal Rubra/Serosa)</option>
+                <option value="heavy">⚠️ Heavy (Soaking Pad &lt; 2 hrs)</option>
+              </select>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <label className="font-extrabold text-slate-800 block">Emotional Mood State</label>
+              <select
+                value={mood}
+                onChange={e => setMood(e.target.value)}
+                className="w-full p-2 rounded-xl border border-slate-200 outline-none"
+              >
+                <option value="good">Peaceful &amp; Supported</option>
+                <option value="tired">Exhausted / Sleep Deprived</option>
+                <option value="tearful">Tearful (Baby Blues)</option>
+                <option value="anxious">Anxious / Overwhelmed</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Log History */}
+          <div className="space-y-2 text-xs">
+            <span className="font-extrabold text-slate-700 block">Recent Recovery Entries:</span>
+            <div className="divide-y border border-slate-100 rounded-2xl overflow-hidden">
+              {journalLogs.map((log, i) => (
+                <div key={i} className="p-3 bg-white flex items-center justify-between">
+                  <div>
+                    <span className="font-bold text-slate-800 mr-2">{log.date}</span>
+                    <span className="text-slate-500">{log.note}</span>
+                  </div>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 font-bold text-slate-700">Pain: {log.pain}/10</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // --- FEATURE 5: DOCTOR SUMMARY TAB ---
+    function DoctorSummaryTab({ record, careDay }) {
+      return (
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+          <div className="flex items-center justify-between border-b pb-4">
+            <div>
+              <h3 className="text-lg font-black text-slate-900">Doctor Recovery Summary</h3>
+              <p className="text-xs text-slate-500">Concise clinical briefing formatted for Obstetricians &amp; Pediatricians</p>
+            </div>
+            <button onClick={() => window.print()} className="px-4 py-2 rounded-xl border border-slate-300 hover:bg-slate-50 text-xs font-bold transition">
+              🖨️ Print Clinical Summary
+            </button>
+          </div>
+
+          <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4 text-xs">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 border-b pb-3">
+              <div><span className="text-slate-400 block">Mother:</span><strong>{record.mother.name} ({record.mother.age}y)</strong></div>
+              <div><span className="text-slate-400 block">Care Day:</span><strong>Day {careDay.currentDay} of 42</strong></div>
+              <div><span className="text-slate-400 block">Infant:</span><strong>{record.newborn.name} ({record.newborn.sex})</strong></div>
+              <div><span className="text-slate-400 block">Birth Weight:</span><strong>{record.newborn.birthWeightKg} kg</strong></div>
+            </div>
+
+            <div className="space-y-1">
+              <span className="font-bold text-slate-700 uppercase text-[10px]">Vital &amp; Healing Trends</span>
+              <p className="text-slate-600 leading-relaxed">Average Maternal Pain Score: 2.8/10. Lochia transitioning normally without hemorrhaging. Maternal BP recorded stable (118/76 mmHg). Infant gaining weight steadily with 6-8 wet diapers daily.</p>
+            </div>
+
+            <div className="space-y-1">
+              <span className="font-bold text-slate-700 uppercase text-[10px]">Questions Prepared for Doctor</span>
+              <ul className="list-disc pl-4 text-slate-600 space-y-1">
+                <li>Is the infant latch optimal given mild intermittent nipple soreness?</li>
+                <li>When can pelvic floor strengthening exercises resume?</li>
+                <li>Confirm scheduling of 6-week UIP vaccination (OPV-1 + Pentavalent-1).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // --- FEATURE 6: FAMILY EXPLAINER TAB ---
+    function FamilyExplainerTab() {
+      const [search, setSearch] = useState('');
+      const explainers = [
+        { term: 'Lochia Rubra', simple: 'Normal postpartum bleeding after birth', do: 'Use sanitary pads, track color change to pink', dont: 'Do not use tampons, do not ignore foul odor' },
+        { term: 'Breast Engorgement', simple: 'Fullness and swelling as mature milk arrives', do: 'Warm compress before feeding, cold compress after', dont: 'Do not restrict feeding, do not bind breasts tightly' },
+        { term: 'Kangaroo Mother Care', simple: 'Direct skin-to-skin contact between parent and baby', do: 'Hold baby dressed only in diaper against bare chest', dont: 'Do not let baby get cold or fall asleep unattended' },
+        { term: 'Umbilical Cord Sloughing', simple: 'Natural drying and detachment of umbilical stump', do: 'Keep dry and clean with air exposure', dont: 'Do not apply cow dung, turmeric or oil to cord' }
+      ];
+
+      const filtered = explainers.filter(e => e.term.toLowerCase().includes(search.toLowerCase()) || e.simple.toLowerCase().includes(search.toLowerCase()));
+
+      return (
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-4">
+            <div>
+              <h3 className="text-lg font-black text-slate-900">Family Medical Explainer</h3>
+              <p className="text-xs text-slate-500">Demystifying medical terminology into actionable caregiver guidance.</p>
+            </div>
+            <input
+              type="text"
+              placeholder="Search terms (e.g. lochia, latch)..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="px-3 py-1.5 rounded-xl border border-slate-200 text-xs outline-none focus:ring-2 focus:ring-rose-500"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            {filtered.map((item, i) => (
+              <div key={i} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-extrabold text-sm text-slate-900">{item.term}</span>
+                  <span className="text-[10px] text-teal-700 font-bold bg-teal-50 px-2 py-0.5 rounded-full">Caregiver Plain Language</span>
+                </div>
+                <p className="text-slate-600 font-medium">{item.simple}</p>
+                <div className="pt-2 grid grid-cols-2 gap-2 text-[11px]">
+                  <div className="p-2 rounded-xl bg-emerald-50 text-emerald-800">
+                    <strong>✓ What to do:</strong><br />{item.do}
+                  </div>
+                  <div className="p-2 rounded-xl bg-rose-50 text-rose-800">
+                    <strong>✕ What NOT to do:</strong><br />{item.dont}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // --- FEATURE 7: OFFLINE MODE TAB ---
+    function OfflineModeTab({ record, careDay }) {
+      return (
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+          <div className="flex items-center justify-between border-b pb-4">
+            <div>
+              <h3 className="text-lg font-black text-slate-900">Offline Mode &amp; Emergency Care Pass</h3>
+              <p className="text-xs text-slate-500">Stored locally in your browser so you have zero dependency on network coverage.</p>
+            </div>
+            <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800">
+              ● Locally Cached &amp; Ready
+            </span>
+          </div>
+
+          <div className="p-5 rounded-2xl bg-gradient-to-tr from-slate-900 to-slate-800 text-white space-y-4 text-xs">
+            <div className="flex items-center justify-between border-b border-slate-700 pb-3">
+              <div>
+                <p className="font-black text-base text-white">{record.mother.name} • Offline Emergency Pass</p>
+                <p className="text-slate-400">RCH: {record.mother.rchId} • Day {careDay.currentDay} of 42</p>
+              </div>
+              <span className="bg-rose-500 text-white font-bold px-2.5 py-1 rounded-full text-[10px]">Active Pass</span>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div><span className="text-slate-400 block">Infant Name:</span><strong>{record.newborn.name}</strong></div>
+              <div><span className="text-slate-400 block">Birth Weight:</span><strong>{record.newborn.birthWeightKg} kg</strong></div>
+              <div><span className="text-slate-400 block">Primary ASHA:</span><strong>Geeta Bai (+91 94123 45678)</strong></div>
+              <div><span className="text-slate-400 block">PHC Facility:</span><strong>District Community Hospital</strong></div>
+            </div>
+
+            <div className="pt-2 border-t border-slate-700 flex flex-wrap gap-2">
+              <a href="tel:108" className="px-3 py-1.5 rounded-xl bg-rose-600 text-white font-bold text-xs hover:bg-rose-700 transition">📞 Dial 108 Ambulance</a>
+              <a href="tel:1091" className="px-3 py-1.5 rounded-xl bg-slate-700 text-slate-200 font-bold text-xs hover:bg-slate-600 transition">📞 Women Helpline 1091</a>
+              <a href="tel:1098" className="px-3 py-1.5 rounded-xl bg-slate-700 text-slate-200 font-bold text-xs hover:bg-slate-600 transition">📞 Childline 1098</a>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // --- FEATURE 8: CARE CIRCLE TAB ---
+    function CareCircleTab({ record }) {
+      const [members, setMembers] = useState([
+        { id: 'm1', name: 'Rajesh Sharma', relation: 'Partner', tier: 'Full Caregiver', phone: '+91 98765 43211' },
+        { id: 'm2', name: 'Kanta Devi', relation: 'Mother-in-Law', tier: 'Care Companion', phone: '+91 98765 43212' },
+        { id: 'm3', name: 'Geeta Bai', relation: 'ASHA Worker', tier: 'Clinical Monitor', phone: '+91 94123 45678' }
+      ]);
+      const [inviteName, setInviteName] = useState('');
+      const [inviteRelation, setInviteRelation] = useState('Sister');
+
+      const handleRevoke = (id) => {
+        setMembers(members.filter(m => m.id !== id));
+      };
+
+      const handleAddMember = (e) => {
+        e.preventDefault();
+        if (!inviteName.trim()) return;
+        setMembers([...members, {
+          id: `m-${Date.now()}`,
+          name: inviteName,
+          relation: inviteRelation,
+          tier: 'Care Companion',
+          phone: '+91 98000 00000'
+        }]);
+        setInviteName('');
+      };
+
+      return (
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+          <div className="flex items-center justify-between border-b pb-4">
+            <div>
+              <h3 className="text-lg font-black text-slate-900">Care Circle: Consent-Based Caregiver Access</h3>
+              <p className="text-xs text-slate-500">Grant and immediately revoke permissions to family members and healthcare workers.</p>
+            </div>
+            <span className="text-xs font-bold px-3 py-1 rounded-full bg-purple-50 text-purple-800">
+              {members.length} Active Members
+            </span>
+          </div>
+
+          <form onSubmit={handleAddMember} className="flex gap-2 text-xs">
+            <input
+              type="text"
+              placeholder="Invite family member (e.g. Sister, Mother)..."
+              value={inviteName}
+              onChange={e => setInviteName(e.target.value)}
+              className="flex-1 px-3 py-2 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-rose-500"
+            />
+            <input
+              type="text"
+              placeholder="Relation"
+              value={inviteRelation}
+              onChange={e => setInviteRelation(e.target.value)}
+              className="w-28 px-3 py-2 rounded-xl border border-slate-200 outline-none"
+            />
+            <button type="submit" className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold transition shadow-sm">
+              Grant Access
+            </button>
+          </form>
+
+          <div className="divide-y divide-slate-100 text-xs">
+            {members.map(m => (
+              <div key={m.id} className="py-3 flex items-center justify-between">
+                <div>
+                  <span className="font-extrabold text-slate-900">{m.name}</span>
+                  <span className="text-slate-400 text-[11px] ml-2">({m.relation})</span>
+                  <p className="text-[11px] text-slate-500 mt-0.5">Permission: <strong className="text-purple-700">{m.tier}</strong> • {m.phone}</p>
+                </div>
+                <button
+                  onClick={() => handleRevoke(m.id)}
+                  className="px-3 py-1 rounded-lg text-rose-600 hover:bg-rose-50 border border-rose-200 font-bold text-[11px] transition"
+                >
+                  Revoke Access
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // --- FEATURE 9: 42-DAY REPORT TAB ---
+    function CompletionReportTab({ record, careDay }) {
+      return (
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+          <div className="flex items-center justify-between border-b pb-4">
+            <div>
+              <h3 className="text-lg font-black text-slate-900">42-Day Completion Report &amp; Graduation</h3>
+              <p className="text-xs text-slate-500">6-week comprehensive continuum milestone report and graduation certificate.</p>
+            </div>
+            <button onClick={() => window.print()} className="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold shadow transition">
+              🎓 Print Graduation Certificate
+            </button>
+          </div>
+
+          {/* Certificate Card */}
+          <div className="border-4 border-double border-teal-600/30 rounded-3xl p-8 bg-gradient-to-b from-teal-50/30 to-white text-center space-y-4">
+            <span className="text-3xl">🏅</span>
+            <div className="space-y-1">
+              <span className="text-[10px] uppercase font-black tracking-widest text-teal-800">OFFICIAL CONTINUUM RECORD</span>
+              <h4 className="text-2xl font-black text-slate-900">Postnatal Care Continuum Certificate</h4>
+              <p className="text-xs text-slate-600 max-w-md mx-auto">This certifies that <strong>{record.mother.name}</strong> and <strong>{record.newborn.name}</strong> have successfully transitioned through the critical postpartum recovery window.</p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-lg mx-auto text-xs text-left pt-2">
+              <div className="p-3 rounded-xl bg-white border border-slate-200"><span className="text-slate-400 block text-[10px]">Birth Weight:</span><strong>{record.newborn.birthWeightKg} kg</strong></div>
+              <div className="p-3 rounded-xl bg-white border border-slate-200"><span className="text-slate-400 block text-[10px]">Care Status:</span><strong className="text-emerald-700">Healthy &amp; Thriving</strong></div>
+              <div className="p-3 rounded-xl bg-white border border-slate-200"><span className="text-slate-400 block text-[10px]">UIP Vaccines:</span><strong>Birth Doses Logged</strong></div>
+            </div>
+
+            <p className="text-[10px] text-slate-400 pt-2">Verified by Primary Health Care Supervisor &amp; ASHA Field Network • MoHFW Continuum Standard</p>
+          </div>
+        </div>
+      );
+    }
+
+    // ---------------- SUBVIEW: ASHA FIELD PORTAL ----------------
+    function AshaPortalView({ records, onUpdateRecords, onSelectRecordId }) {
+      const [visitModalRecord, setVisitModalRecord] = useState(null);
+      const [maternalTemp, setMaternalTemp] = useState('98.6');
+      const [lochiaStatus, setLochiaStatus] = useState('normal');
+
+      const handleSaveVisit = () => {
+        if (!visitModalRecord) return;
+        alert(`Home visit logged for ${visitModalRecord.mother.name}. Updated status to Stable.`);
+        setVisitModalRecord(null);
+      };
+
+      return (
+        <div className="space-y-6">
+          <div className="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+            <h2 className="text-2xl font-black">ASHA &amp; Community Health Worker Portal</h2>
+            <p className="text-xs text-emerald-100 mt-1 max-w-2xl">Manage sector home visit schedules (Days 1, 3, 7, 14, 21, 28, 42), identify maternal danger signs, and escalate high-risk cases.</p>
+          </div>
+
+          <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+              <h3 className="font-extrabold text-sm text-slate-800">Active Sector Cohort ({records.length} Mothers)</h3>
+              <span className="text-xs text-slate-400">Sector RCH-04</span>
+            </div>
+
+            <div className="divide-y divide-slate-100 text-xs">
+              {records.map(rec => {
+                const day = computeCareDay(rec.newborn.birthDate);
+                return (
+                  <div key={rec.id} className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-black text-slate-900 text-sm">{rec.mother.name}</span>
+                        <span className="text-slate-400">({rec.mother.age} yrs)</span>
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                          rec.healthStatus === 'stable' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                        }`}>
+                          {rec.healthStatus === 'stable' ? 'Stable' : 'Attention Needed'}
+                        </span>
+                      </div>
+                      <p className="text-slate-500">Baby: <strong>{rec.newborn.name}</strong> • Day {day.currentDay} of 42 ({rec.newborn.birthWeightKg} kg)</p>
+                      <p className="text-slate-500">Next Visit: <strong>{rec.nextFollowUp.date}</strong> - {rec.nextFollowUp.type}</p>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setVisitModalRecord(rec)}
+                        className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition shadow-sm"
+                      >
+                        Log Home Visit
+                      </button>
+                      <button
+                        onClick={() => onSelectRecordId(rec.id)}
+                        className="px-3.5 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold transition"
+                      >
+                        View Full Plan →
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Log Visit Modal */}
+          {visitModalRecord && (
+            <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl text-xs">
+                <div className="flex items-center justify-between border-b pb-3">
+                  <h3 className="font-extrabold text-base text-slate-900">Record ASHA Home Visit</h3>
+                  <button onClick={() => setVisitModalRecord(null)} className="text-slate-400 font-bold text-lg">✕</button>
+                </div>
+                <div className="space-y-3">
+                  <div>
+                    <label className="font-bold text-slate-700 block mb-1">Maternal Temperature (°F)</label>
+                    <input
+                      type="text"
+                      value={maternalTemp}
+                      onChange={e => setMaternalTemp(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold text-slate-700 block mb-1">Lochia Bleeding Status</label>
+                    <select
+                      value={lochiaStatus}
+                      onChange={e => setLochiaStatus(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none"
+                    >
+                      <option value="normal">Normal (Moderate, non-foul)</option>
+                      <option value="heavy">⚠️ Heavy Soaking (&gt; 1 pad/hr)</option>
+                      <option value="foul">⚠️ Foul Odor / Fever (Infection)</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="flex justify-end gap-2 pt-3 border-t">
+                  <button onClick={() => setVisitModalRecord(null)} className="px-4 py-2 rounded-xl border">Cancel</button>
+                  <button onClick={handleSaveVisit} className="px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold">Save Visit Check-in</button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // ---------------- SUBVIEW: ADMIN GOVERNANCE ----------------
+    function AdminGovernanceView({ activeRole, onChangeRole, records }) {
+      if (activeRole === 'mother') {
+        return (
+          <div className="max-w-2xl mx-auto py-12 text-center space-y-4">
+            <div className="w-16 h-16 rounded-2xl bg-amber-100 text-amber-700 font-black text-2xl flex items-center justify-center mx-auto">
+              🔒
+            </div>
+            <h3 className="text-xl font-black text-slate-900">Clinical Governance &amp; Administration Protected</h3>
+            <p className="text-xs text-slate-600">You are currently viewing as a Patient/Mother. Clinical review, credentialing, and FHIR endpoints require staff privileges.</p>
+            <div className="flex justify-center gap-2 pt-2">
+              <button onClick={() => onChangeRole('doctor')} className="px-4 py-2 rounded-xl bg-sky-600 text-white font-bold text-xs shadow">Enter as Doctor (Dr. Sarah Lin)</button>
+              <button onClick={() => onChangeRole('admin')} className="px-4 py-2 rounded-xl bg-purple-600 text-white font-bold text-xs shadow">Enter as System Admin</button>
+            </div>
+          </div>
+        );
+      }
+
+      return (
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6 text-xs">
+          <div className="flex items-center justify-between border-b pb-4">
+            <div>
+              <h3 className="text-lg font-black text-slate-900">Clinical Governance &amp; Administration</h3>
+              <p className="text-slate-500">Staff &amp; Reviewer Portal (Stage 4) • WHO Privacy Governance Standard</p>
+            </div>
+            <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-purple-100 text-purple-800 uppercase">
+              Role: {activeRole.toUpperCase()}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <span className="font-bold text-slate-800 block text-sm">Evidence Workflow</span>
+              <p className="text-slate-500">4 Reviewed Articles Published. 1 Clinical Draft pending peer obstetric review.</p>
+              <span className="text-[10px] text-teal-700 font-bold">● All guidelines verified</span>
+            </div>
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <span className="font-bold text-slate-800 block text-sm">Provider Credentialing</span>
+              <p className="text-slate-500">4 Verified OB/GYN &amp; Pediatrician listings with verified medical licenses.</p>
+              <span className="text-[10px] text-emerald-700 font-bold">● 100% credentialed</span>
+            </div>
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <span className="font-bold text-slate-800 block text-sm">HL7 FHIR R4 Endpoints</span>
+              <p className="text-slate-500">Standardized interoperability endpoints for Patient &amp; Appointment bundles.</p>
+              <span className="text-[10px] text-purple-700 font-mono">/api/fhir/Patient • 200 OK</span>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ---------------- SUBVIEW: ORGANIZER ----------------
+    function VisitOrganizerView() {
+      const [appts, setAppts] = useState([
+        { id: 'a1', title: 'Day 14 Postnatal Pediatric Check', date: '2026-10-25 10:00 AM', doctor: 'Dr. Sarah Lin (FACOG)' },
+        { id: 'a2', title: '6-Week Maternal Pelvic Examination', date: '2026-11-20 02:30 PM', doctor: 'District Maternity Hospital' }
+      ]);
+
+      return (
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6 text-xs">
+          <div className="flex items-center justify-between border-b pb-4">
+            <div>
+              <h3 className="text-lg font-black text-slate-900">Personal Visit Organizer &amp; Notes Vault</h3>
+              <p className="text-slate-500">Schedule appointments, record private clinical notes, and prepare questions.</p>
+            </div>
+          </div>
+          <div className="space-y-3">
+            {appts.map(a => (
+              <div key={a.id} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                <div>
+                  <p className="font-extrabold text-sm text-slate-800">{a.title}</p>
+                  <p className="text-slate-500">{a.date} • {a.doctor}</p>
+                </div>
+                <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-teal-100 text-teal-800">Confirmed</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // ---------------- SUBVIEW: VITALS TRACKER ----------------
+    function VitalsTrackerView() {
+      return (
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6 text-xs">
+          <div className="flex items-center justify-between border-b pb-4">
+            <div>
+              <h3 className="text-lg font-black text-slate-900">Infant &amp; Maternal Vitals Tracker</h3>
+              <p className="text-slate-500">Daily feeding, sleep duration, and diaper logs with total privacy.</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="p-4 rounded-2xl bg-rose-50 border border-rose-100 text-center"><span className="text-2xl font-black text-rose-700">8</span><p className="text-slate-600 font-bold mt-1">Feeds Today</p></div>
+            <div className="p-4 rounded-2xl bg-teal-50 border border-teal-100 text-center"><span className="text-2xl font-black text-teal-700">6</span><p className="text-slate-600 font-bold mt-1">Wet Diapers</p></div>
+            <div className="p-4 rounded-2xl bg-purple-50 border border-purple-100 text-center"><span className="text-2xl font-black text-purple-700">14.5h</span><p className="text-slate-600 font-bold mt-1">Sleep Total</p></div>
+            <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-100 text-center"><span className="text-2xl font-black text-emerald-700">+380g</span><p className="text-slate-600 font-bold mt-1">Weight Delta</p></div>
+          </div>
+        </div>
+      );
+    }
+
+    // ---------------- SUBVIEW: URGENT HELP ----------------
+    function UrgentHelpView() {
+      return (
+        <div className="space-y-6 text-xs">
+          <div className="bg-rose-600 text-white rounded-3xl p-6 sm:p-8 space-y-3">
+            <h2 className="text-2xl font-black">Urgent Help &amp; Red Flag Triage Matrix</h2>
+            <p className="text-rose-100">If any symptoms below appear, do not wait for appointment—seek immediate emergency care.</p>
+            <div className="flex flex-wrap gap-3 pt-2">
+              <a href="tel:108" className="bg-white text-rose-700 px-4 py-2 rounded-xl font-black text-sm shadow">📞 Call 108 Ambulance</a>
+              <a href="tel:1091" className="bg-rose-800 text-white px-4 py-2 rounded-xl font-bold text-sm">📞 Women Helpline 1091</a>
+              <a href="tel:1098" className="bg-rose-800 text-white px-4 py-2 rounded-xl font-bold text-sm">📞 Childline 1098</a>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-white p-5 rounded-2xl border border-rose-200 space-y-2">
+              <h4 className="font-extrabold text-sm text-rose-800">Maternal Red Flags (Postpartum)</h4>
+              <ul className="list-disc pl-4 text-slate-600 space-y-1">
+                <li>Heavy bleeding: Soaking &gt; 1 maxi pad in an hour for 2 hours in a row</li>
+                <li>Severe headache with blurry vision, light flashes, or spots</li>
+                <li>Fever of 100.4°F (38°C) or higher with abdominal tenderness</li>
+                <li>Chest pain, shortness of breath, or sudden painful leg swelling</li>
+              </ul>
+            </div>
+            <div className="bg-white p-5 rounded-2xl border border-rose-200 space-y-2">
+              <h4 className="font-extrabold text-sm text-rose-800">Infant Emergency Indicators</h4>
+              <ul className="list-disc pl-4 text-slate-600 space-y-1">
+                <li>Rectal temperature of 100.4°F (38°C) or higher under 3 months</li>
+                <li>Labored breathing: grunting, chest pulling inward below ribs</li>
+                <li>Extreme lethargy: Infant cannot be awakened or won’t latch</li>
+                <li>Dry diapers for 8+ consecutive hours or sunken fontanelle</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ---------------- SUBVIEW: PROVIDERS ----------------
+    function ProvidersDirectoryView() {
+      const providers = [
+        { name: 'Dr. Sarah Lin, MD, FACOG', spec: 'Obstetrics & Maternal-Fetal Medicine', loc: 'District Hospital, Sector 4', rating: '4.9 ★' },
+        { name: 'Dr. Kenneth Reed, FAAP', spec: 'Pediatrics & Newborn Care', loc: 'Evergreen Health Clinic', rating: '4.8 ★' },
+        { name: 'Amara Williams, IBCLC', spec: 'Certified Lactation Consultant', loc: 'Maternal Wellness Center', rating: '5.0 ★' }
+      ];
+
+      return (
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6 text-xs">
+          <div className="flex items-center justify-between border-b pb-4">
+            <h3 className="text-lg font-black text-slate-900">Verified Healthcare Providers Directory</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {providers.map((p, i) => (
+              <div key={i} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                <span className="font-extrabold text-sm text-slate-800 block">{p.name}</span>
+                <p className="text-teal-700 font-bold">{p.spec}</p>
+                <p className="text-slate-500">{p.loc} • {p.rating}</p>
+                <span className="inline-block text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">✓ Verified License</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // ---------------- SUBVIEW: GUIDANCE ARTICLES ----------------
+    function GuidanceArticlesView() {
+      const articles = [
+        { title: 'The Fourth Trimester: Physical Recovery & Recognizing Preeclampsia', stage: 'Postpartum', read: '6 min read' },
+        { title: 'Newborn Safe Sleep Guidelines (AAP 2026) & Latch Mechanics', stage: 'Baby Care', read: '7 min read' },
+        { title: 'First Trimester Essentials: Prenatal Nutrition & Red Flags', stage: 'Pregnancy', read: '5 min read' }
+      ];
+
+      return (
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6 text-xs">
+          <div className="flex items-center justify-between border-b pb-4">
+            <h3 className="text-lg font-black text-slate-900">Peer-Reviewed Guidance Articles</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {articles.map((a, i) => (
+              <div key={i} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                <span className="text-[10px] font-bold uppercase text-purple-700">{a.stage} • {a.read}</span>
+                <p className="font-extrabold text-sm text-slate-800">{a.title}</p>
+                <span className="text-[10px] text-teal-700 font-semibold block">✓ Reviewed by Obstetricians</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // Mount React Root
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
   </script>
 </body>
 </html>
