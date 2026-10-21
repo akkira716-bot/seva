@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { Appointment, User } from '@/types';
 import { useLanguage } from '@/context/LanguageContext';
+import { useAuth } from '@/context/AuthContext';
 import { SupportedLanguage } from '@/locales/translations';
 
 function OrganizerContent() {
@@ -33,7 +34,8 @@ function OrganizerContent() {
   const providerNameParam = searchParams.get('providerName');
 
   const [activeTab, setActiveTab] = useState<'appointments' | 'questions' | 'privacy'>('appointments');
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const { currentUser: authUser } = useAuth();
+  const [currentUser, setCurrentUser] = useState<User | null>(authUser || null);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -60,9 +62,13 @@ function OrganizerContent() {
   const [exportNotice, setExportNotice] = useState(false);
 
   useEffect(() => {
-    loadUser();
+    if (authUser) {
+      setCurrentUser(authUser);
+    } else {
+      loadUser();
+    }
     loadQuestions(selectedQuestionStage);
-  }, []);
+  }, [authUser]);
 
   useEffect(() => {
     if (currentUser) {

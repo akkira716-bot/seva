@@ -270,14 +270,24 @@ export default function HomePage() {
               {t('home_modular_desc')}
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 pt-2">
+            {/* Unified 8-Portal Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
               <Link
                 href="/maatrusetu"
                 className="p-4 rounded-xl bg-slate-800/80 border border-slate-700 hover:border-teal-400 transition block text-left group"
               >
                 <HeartPulse className="w-5 h-5 text-teal-400 mb-2 group-hover:scale-110 transition-transform" />
-                <h4 className="text-sm font-bold text-white">{t('nav_maatrusetu')}</h4>
-                <p className="text-xs text-slate-400 mt-1">42-day maternal and newborn care continuum.</p>
+                <h4 className="text-sm font-bold text-white">MaatruSetu 42-Day</h4>
+                <p className="text-xs text-slate-400 mt-1">Personalized postnatal continuum &amp; 9 clinical features.</p>
+              </Link>
+
+              <Link
+                href="/asha"
+                className="p-4 rounded-xl bg-slate-800/80 border border-slate-700 hover:border-emerald-400 transition block text-left group"
+              >
+                <Activity className="w-5 h-5 text-emerald-400 mb-2 group-hover:scale-110 transition-transform" />
+                <h4 className="text-sm font-bold text-white">ASHA Worker Portal</h4>
+                <p className="text-xs text-slate-400 mt-1">Community cohort triage, home visit checklist &amp; alerts.</p>
               </Link>
 
               <Link
@@ -293,9 +303,36 @@ export default function HomePage() {
                 href="/tracker"
                 className="p-4 rounded-xl bg-slate-800/80 border border-slate-700 hover:border-teal-400 transition block text-left group"
               >
-                <Activity className="w-5 h-5 text-teal-400 mb-2 group-hover:scale-110 transition-transform" />
+                <Clock className="w-5 h-5 text-teal-400 mb-2 group-hover:scale-110 transition-transform" />
                 <h4 className="text-sm font-bold text-white">{t('home_card_tracker_title')}</h4>
                 <p className="text-xs text-slate-400 mt-1">{t('home_card_tracker_desc')}</p>
+              </Link>
+
+              <Link
+                href="/providers"
+                className="p-4 rounded-xl bg-slate-800/80 border border-slate-700 hover:border-sky-400 transition block text-left group"
+              >
+                <Search className="w-5 h-5 text-sky-400 mb-2 group-hover:scale-110 transition-transform" />
+                <h4 className="text-sm font-bold text-white">Verified Providers</h4>
+                <p className="text-xs text-slate-400 mt-1">Obstetricians, pediatricians &amp; lactation consultants.</p>
+              </Link>
+
+              <Link
+                href="/urgent-help"
+                className="p-4 rounded-xl bg-slate-800/80 border border-slate-700 hover:border-red-400 transition block text-left group"
+              >
+                <AlertOctagon className="w-5 h-5 text-red-400 mb-2 group-hover:scale-110 transition-transform" />
+                <h4 className="text-sm font-bold text-white">Urgent Red Flags</h4>
+                <p className="text-xs text-slate-400 mt-1">Triage matrix, emergency hotlines &amp; ambulance speed-dial.</p>
+              </Link>
+
+              <Link
+                href="/articles"
+                className="p-4 rounded-xl bg-slate-800/80 border border-slate-700 hover:border-amber-400 transition block text-left group"
+              >
+                <Sparkles className="w-5 h-5 text-amber-400 mb-2 group-hover:scale-110 transition-transform" />
+                <h4 className="text-sm font-bold text-white">Clinical Guidance</h4>
+                <p className="text-xs text-slate-400 mt-1">Peer-reviewed pregnancy, postpartum &amp; baby articles.</p>
               </Link>
 
               <Link
@@ -303,9 +340,114 @@ export default function HomePage() {
                 className="p-4 rounded-xl bg-slate-800/80 border border-slate-700 hover:border-purple-400 transition block text-left group"
               >
                 <ShieldCheck className="w-5 h-5 text-purple-400 mb-2 group-hover:scale-110 transition-transform" />
-                <h4 className="text-sm font-bold text-white">{t('home_card_admin_title')}</h4>
-                <p className="text-xs text-slate-400 mt-1">{t('home_card_admin_desc')}</p>
+                <h4 className="text-sm font-bold text-white">Clinical Admin</h4>
+                <p className="text-xs text-slate-400 mt-1">Reviewer workflows, audit logs &amp; FHIR R4 endpoints.</p>
               </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Unified 26-Feature Catalog */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-10 space-y-8">
+          <div className="text-center max-w-3xl mx-auto space-y-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-3 py-1 rounded-full">
+              Complete Integrated Suite
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              All 26 Features Under One Unified MaatruSetu URL
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500">
+              Unifying maternal care, ASHA field supervision, clinical review, and patient privacy under one continuous architecture with shared authentication.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Category 1 */}
+            <div className="p-5 rounded-2xl bg-rose-50/50 border border-rose-100 space-y-3">
+              <div className="flex items-center gap-2 text-rose-800 font-bold text-sm">
+                <HeartPulse className="w-4 h-4 text-rose-600" />
+                <span>Maternal Care Continuum</span>
+              </div>
+              <ul className="text-xs text-slate-600 space-y-2">
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-rose-600 shrink-0 mt-0.5" /> <strong>1. Continuum Profile:</strong> Day 1-42 tracker &amp; health triage</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-rose-600 shrink-0 mt-0.5" /> <strong>2. Postnatal Check-ins:</strong> ANM/ASHA home visit alerts</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-rose-600 shrink-0 mt-0.5" /> <strong>3. Onboarding Registration:</strong> Mother &amp; newborn registry</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-rose-600 shrink-0 mt-0.5" /> <strong>4. MaatruAI:</strong> Daily maternal guidance &amp; non-diagnostic Q&amp;A</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-rose-600 shrink-0 mt-0.5" /> <strong>5. Family Care Mode:</strong> Caregiver role task allocation</li>
+              </ul>
+            </div>
+
+            {/* Category 2 */}
+            <div className="p-5 rounded-2xl bg-teal-50/50 border border-teal-100 space-y-3">
+              <div className="flex items-center gap-2 text-teal-800 font-bold text-sm">
+                <Activity className="w-4 h-4 text-teal-600" />
+                <span>Clinical &amp; Recovery Intelligence</span>
+              </div>
+              <ul className="text-xs text-slate-600 space-y-2">
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-teal-600 shrink-0 mt-0.5" /> <strong>6. Digital Discharge:</strong> 4-quadrant verified care instructions</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-teal-600 shrink-0 mt-0.5" /> <strong>7. Recovery Journal:</strong> 0-10 pain, lochia, temp &amp; mood log</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-teal-600 shrink-0 mt-0.5" /> <strong>8. Doctor Summary:</strong> Consolidated clinical briefing &amp; export</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-teal-600 shrink-0 mt-0.5" /> <strong>9. Family Explainer:</strong> Medical jargon translator (Do vs Don't)</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-teal-600 shrink-0 mt-0.5" /> <strong>10. Offline Mode:</strong> Emergency care pass &amp; cached records</li>
+              </ul>
+            </div>
+
+            {/* Category 3 */}
+            <div className="p-5 rounded-2xl bg-sky-50/50 border border-sky-100 space-y-3">
+              <div className="flex items-center gap-2 text-sky-800 font-bold text-sm">
+                <Calendar className="w-4 h-4 text-sky-600" />
+                <span>Care Circle &amp; Milestones</span>
+              </div>
+              <ul className="text-xs text-slate-600 space-y-2">
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-sky-600 shrink-0 mt-0.5" /> <strong>11. Care Circle:</strong> Revocable caregiver permissions</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-sky-600 shrink-0 mt-0.5" /> <strong>12. 42-Day Graduation:</strong> 6-week report &amp; printable certificate</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-sky-600 shrink-0 mt-0.5" /> <strong>13. Evidence Articles:</strong> Peer-reviewed pregnancy &amp; baby library</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-sky-600 shrink-0 mt-0.5" /> <strong>14. Stage Filtered Reader:</strong> Trimester-specific reading lists</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-sky-600 shrink-0 mt-0.5" /> <strong>15. Care Providers Directory:</strong> Verified OB/GYN &amp; pediatrician finder</li>
+              </ul>
+            </div>
+
+            {/* Category 4 */}
+            <div className="p-5 rounded-2xl bg-amber-50/50 border border-amber-100 space-y-3">
+              <div className="flex items-center gap-2 text-amber-800 font-bold text-sm">
+                <Clock className="w-4 h-4 text-amber-600" />
+                <span>Personal Vault &amp; Tracker</span>
+              </div>
+              <ul className="text-xs text-slate-600 space-y-2">
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" /> <strong>16. Visit Scheduler:</strong> Appointment notes &amp; reminders</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" /> <strong>17. Doctor Questions Vault:</strong> Pre-populated stage checklists</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" /> <strong>18. Daily Vitals Tracker:</strong> Feeding, diaper, sleep &amp; growth</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" /> <strong>19. Urgent Red Flags:</strong> Maternal &amp; neonatal triage matrices</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" /> <strong>20. Emergency Speed Dial:</strong> 108, 988, 1091, 1098 1-tap call</li>
+              </ul>
+            </div>
+
+            {/* Category 5 */}
+            <div className="p-5 rounded-2xl bg-emerald-50/50 border border-emerald-100 space-y-3">
+              <div className="flex items-center gap-2 text-emerald-800 font-bold text-sm">
+                <Activity className="w-4 h-4 text-emerald-600" />
+                <span>Community &amp; Supervision</span>
+              </div>
+              <ul className="text-xs text-slate-600 space-y-2">
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" /> <strong>21. ASHA Field Portal:</strong> Community cohort home visit register</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" /> <strong>22. Content Lifecycle:</strong> Draft ➔ Review ➔ Editorial ➔ Publish</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" /> <strong>23. Provider Credentialing:</strong> Medical license verification workflow</li>
+              </ul>
+            </div>
+
+            {/* Category 6 */}
+            <div className="p-5 rounded-2xl bg-purple-50/50 border border-purple-100 space-y-3">
+              <div className="flex items-center gap-2 text-purple-800 font-bold text-sm">
+                <ShieldCheck className="w-4 h-4 text-purple-600" />
+                <span>Interoperability &amp; Governance</span>
+              </div>
+              <ul className="text-xs text-slate-600 space-y-2">
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-purple-600 shrink-0 mt-0.5" /> <strong>24. HL7 FHIR R4:</strong> Patient &amp; Appointment interoperability</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-purple-600 shrink-0 mt-0.5" /> <strong>25. WHO Audit Trails:</strong> Privacy-preserving PII-sanitized logs</li>
+                <li className="flex items-start gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-purple-600 shrink-0 mt-0.5" /> <strong>26. Shared Auth &amp; RBAC:</strong> Role switcher, Portability &amp; Erasure</li>
+              </ul>
             </div>
           </div>
         </div>

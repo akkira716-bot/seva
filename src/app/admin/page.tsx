@@ -24,10 +24,19 @@ import {
 } from 'lucide-react';
 import { Article, Provider, AuditLog, UserRole, PublicationStatus } from '@/types';
 import { MaatruSetuRecord, computeCareDay } from '@/types/maatrusetu';
+import { useAuth } from '@/context/AuthContext';
+import { Lock, ShieldAlert as ShieldAlertIcon } from 'lucide-react';
 
 export default function AdminPortalPage() {
+  const { activeRole: globalRole, switchRole: globalSwitchRole, currentUser } = useAuth();
   const [activeRole, setActiveRole] = useState<UserRole>('clinical_reviewer');
   const [activeTab, setActiveTab] = useState<'content' | 'providers' | 'audit' | 'fhir' | 'maatrusetu'>('content');
+
+  useEffect(() => {
+    if (globalRole === 'admin' || globalRole === 'clinical_reviewer' || globalRole === 'doctor' || globalRole === 'content_editor') {
+      setActiveRole(globalRole === 'doctor' ? 'clinical_reviewer' : (globalRole as any));
+    }
+  }, [globalRole]);
 
   const [articles, setArticles] = useState<Article[]>([]);
   const [providers, setProviders] = useState<Provider[]>([]);
@@ -164,6 +173,70 @@ export default function AdminPortalPage() {
       console.error('FHIR fetch failed', e);
     }
   };
+
+  if (globalRole === 'mother' || globalRole === 'user') {
+    return (
+      <div className="max-w-3xl mx-auto px-4 py-16 text-center space-y-6">
+        <div className="w-16 h-16 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center mx-auto shadow-md">
+          <Lock className="w-8 h-8" />
+        </div>
+        <div className="space-y-2">
+          <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-100 text-amber-800">
+            Protected Staff Area
+          </span>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+            Clinical Governance &amp; Administration
+          </h1>
+          <p className="text-slate-600 text-sm max-w-lg mx-auto">
+            This portal is restricted to authorized medical personnel, ASHA field supervisors, and administrators. You are currently logged in as <strong>{currentUser?.name || 'Mother Persona'}</strong>.
+          </p>
+        </div>
+
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-lg space-y-4 text-left">
+          <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+            Select an authorized healthcare credential to enter:
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <button
+              onClick={() => globalSwitchRole('doctor')}
+              className="p-4 rounded-2xl border border-slate-200 hover:border-sky-500 hover:bg-sky-50 transition text-left space-y-1 group"
+            >
+              <span className="text-[10px] font-bold text-sky-700 uppercase bg-sky-100 px-2 py-0.5 rounded-full">Doctor</span>
+              <p className="font-extrabold text-xs text-slate-800 group-hover:text-sky-800">Dr. Sarah Lin</p>
+              <p className="text-[11px] text-slate-500">Clinical Reviewer &amp; Obstetrician</p>
+            </button>
+
+            <button
+              onClick={() => globalSwitchRole('asha')}
+              className="p-4 rounded-2xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition text-left space-y-1 group"
+            >
+              <span className="text-[10px] font-bold text-emerald-700 uppercase bg-emerald-100 px-2 py-0.5 rounded-full">ASHA</span>
+              <p className="font-extrabold text-xs text-slate-800 group-hover:text-emerald-800">Geeta Bai</p>
+              <p className="text-[11px] text-slate-500">Community Health Supervisor</p>
+            </button>
+
+            <button
+              onClick={() => globalSwitchRole('admin')}
+              className="p-4 rounded-2xl border border-slate-200 hover:border-purple-500 hover:bg-purple-50 transition text-left space-y-1 group"
+            >
+              <span className="text-[10px] font-bold text-purple-700 uppercase bg-purple-100 px-2 py-0.5 rounded-full">Admin</span>
+              <p className="font-extrabold text-xs text-slate-800 group-hover:text-purple-800">System Admin</p>
+              <p className="text-[11px] text-slate-500">Security &amp; Full Access</p>
+            </button>
+          </div>
+
+          <div className="pt-3 border-t border-slate-100 flex justify-center">
+            <Link
+              href="/maatrusetu"
+              className="text-xs text-slate-500 hover:text-slate-800 font-semibold"
+            >
+              ← Return to Maternal Dashboard
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">

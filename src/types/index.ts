@@ -9,7 +9,7 @@ export type PublicationStatus =
   | 'published' 
   | 'retired';
 
-export type UserRole = 'user' | 'content_editor' | 'clinical_reviewer' | 'admin';
+export type UserRole = 'user' | 'mother' | 'asha' | 'doctor' | 'content_editor' | 'clinical_reviewer' | 'admin';
 
 export interface User {
   id: string;

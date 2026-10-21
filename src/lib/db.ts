@@ -302,41 +302,56 @@ export const DEFAULT_QUESTIONS_BY_STAGE: Record<string, string[]> = {
   ]
 };
 
-// Seed Demo Users (User & Admin/Reviewer)
+// Seed Demo Users (Mother, ASHA Worker, Doctor/Reviewer, Admin)
 const SEED_USERS: User[] = [
   {
     id: 'user-demo-1',
-    name: 'Maya Patel',
-    email: 'maya.parent@example.com',
-    phone: '+1 (503) 555-0177',
-    role: 'user',
+    name: 'Anita Sharma',
+    email: 'anita.mother@maatrusetu.org',
+    phone: '+91 98765 43210',
+    role: 'mother',
     preferredLanguage: 'en',
     notificationPreferences: {
       email: true,
-      sms: false,
+      sms: true,
       appointmentReminders: true,
       healthCheckins: true
     },
     createdAt: '2026-09-01T10:00:00Z'
   },
   {
+    id: 'asha-demo-1',
+    name: 'Geeta Bai',
+    email: 'geeta.asha@health.gov.in',
+    phone: '+91 94123 45678',
+    role: 'asha',
+    preferredLanguage: 'hi',
+    notificationPreferences: {
+      email: true,
+      sms: true,
+      appointmentReminders: true,
+      healthCheckins: true
+    },
+    createdAt: '2026-08-15T09:00:00Z'
+  },
+  {
     id: 'reviewer-demo-1',
-    name: 'Dr. Sarah Lin, MD',
-    email: 'dr.lin@clinics.seva.org',
-    role: 'clinical_reviewer',
+    name: 'Dr. Sarah Lin, MD, FACOG',
+    email: 'dr.lin@clinics.maatrusetu.org',
+    role: 'doctor',
     preferredLanguage: 'en',
     notificationPreferences: {
       email: true,
       sms: true,
-      appointmentReminders: false,
+      appointmentReminders: true,
       healthCheckins: false
     },
     createdAt: '2026-08-01T08:00:00Z'
   },
   {
     id: 'admin-demo-1',
-    name: 'Seva Editorial Admin',
-    email: 'admin@seva.org',
+    name: 'MaatruSetu System Admin',
+    email: 'admin@maatrusetu.org',
     role: 'admin',
     preferredLanguage: 'en',
     notificationPreferences: {

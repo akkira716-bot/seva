@@ -13,9 +13,13 @@ import {
 } from 'lucide-react';
 import { CareLogEntry, CareLogType } from '@/types';
 import { useLanguage } from '@/context/LanguageContext';
+import { useAuth } from '@/context/AuthContext';
 
 export default function TrackerPage() {
   const { t } = useLanguage();
+  const { currentUser } = useAuth();
+  const userId = currentUser?.id || 'user-demo-1';
+
   const [logs, setLogs] = useState<CareLogEntry[]>([]);
   const [summary, setSummary] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -35,11 +39,9 @@ export default function TrackerPage() {
   const [retentionDays, setRetentionDays] = useState('0'); // 0 = all
   const [purgeNotice, setPurgeNotice] = useState<string | null>(null);
 
-  const userId = 'user-demo-1';
-
   useEffect(() => {
     fetchLogs();
-  }, [activeFilter]);
+  }, [activeFilter, userId]);
 
   const fetchLogs = async () => {
     setLoading(true);

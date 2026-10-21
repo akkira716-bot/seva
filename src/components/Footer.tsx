@@ -39,6 +39,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/asha" className="text-emerald-400 font-semibold hover:text-emerald-300 transition">
+                  ASHA &amp; Community Health Worker Portal
+                </Link>
+              </li>
+              <li>
                 <Link href="/articles?stage=pregnancy" className="hover:text-rose-300 transition">
                   {t('home_stage_pregnancy')}
                 </Link>
